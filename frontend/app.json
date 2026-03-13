@@ -1,0 +1,35 @@
+{
+  "name": "two-cents-frontend",
+  "displayName": "TwoCents",
+  "expo": {
+    "name": "two-cents-frontend",
+    "slug": "two-cents",
+    "version": "1.0.0",
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTabletMode": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./src/assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          },
+          "android": {
+            "useFrameworks": "org.gradle"
+          }
+        }
+      ]
+    ]
+  }
+}
