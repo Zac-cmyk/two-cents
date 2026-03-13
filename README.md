@@ -69,10 +69,8 @@ Then select your platform (iOS, Android, or Web).
 ### Backend
 - **Node.js** with **Express.js**
 - **TypeScript** for type safety
-- **MongoDB** with **Mongoose** for database
-- **JWT** for authentication
-- **CORS** for cross-origin requests
-- **bcryptjs** for password hashing
+- **PostgreSQL** with **Prisma DB** for database
+- **Google Sign-in** for authentication
 
 ### Frontend
 - **React Native** with **Expo**
