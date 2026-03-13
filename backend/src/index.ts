@@ -16,6 +16,10 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.get('/', (req, res) => {
+  res.send('Welcome to the Two Cents API!');
+});
+
 // Routes
 import { healthRouter } from './routes/health.routes';
 app.use('/api/health', healthRouter);
