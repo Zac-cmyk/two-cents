@@ -10,10 +10,18 @@ import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
 
-  const [ name, setName ] = useState("");
+  const [ username, setUsername ] = useState("");
   const [ moveOn, setMoveOn ] = useState(false);
 
   const navigate = useNavigate();
+
+  const movingOn = () => {
+    // todo: validate username
+    if (username == "") {
+      return false;
+    }
+    setMoveOn(true)
+  }
 
   const googleLogin = async () => {
     await signInWithGoogle();
@@ -69,15 +77,16 @@ export default function SignUp() {
       <>
       <Field className="flex flex-col gap-3">
         <p>What should we call you?</p>
-        <FieldLabel htmlFor="input-field-name">Name?</FieldLabel>
+        <FieldLabel htmlFor="input-field-username">Username</FieldLabel>
         <Input
-          id="input-field-name"
+          id="input-field-username"
           type="text"
-          placeholder="Enter your name"
-          onChange={(e) => setName(e.target.value)}
+          placeholder="Enter your username"
+          onChange={(e) => setUsername(e.target.value)}
         />
+        <FieldDescription>Username must be unique!</FieldDescription>
         <div className="w-full flex justify-end">
-          <Button className="bg-black/50 text-white shadow hover:cursor-pointer px-5" onClick={() => setMoveOn(true)}>Next</Button>
+          <Button className="bg-black/50 text-white shadow hover:cursor-pointer px-5" onClick={movingOn}>Next</Button>
         </div>
       </Field>
       </>
