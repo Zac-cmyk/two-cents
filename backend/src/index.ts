@@ -30,6 +30,9 @@ app.use('/api/health', healthRouter);
 import { categoryRouter } from './routes/category.routes';
 app.use('/api/category', categoryRouter);
 
+import { authRouter } from './routes/auth.routes';
+app.use('/api/auth', authRouter);
+
 // Start server
 const startServer = (port: number): Server => {
   const server = app.listen(port, () => {
