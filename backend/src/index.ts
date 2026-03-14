@@ -1,5 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
+import { updateUser, UserRecord } from './functions/users';
+import { Request, Response } from 'express';
 
 import express, { Express } from 'express';
 import cors from 'cors';
@@ -27,6 +29,52 @@ app.get('/', (req, res) => {
 import { healthRouter } from './routes/health.routes';
 app.use('/api/health', healthRouter);
 
+// Set income
+app.put('/users/:userId/income', async (req: Request, res: Response) => {
+  const { userId } = req.params;
+  const { income } = req.body;
+
+  if (income !== null && typeof income !== 'number') {
+    return res.status(400).json({ error: 'Income must be a number or null' });
+  }
+
+  try {
+    const updatedUser: UserRecord | null = await updateUser(userId, { income });
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    return res.json(updatedUser);
+  } catch (err) {
+    console.error('Failed to update income:', err);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// set pay_period
+app.put('/users/:userId/pay_period', async (req: Request, res: Response) => {
+  const { userId } = req.params;
+  const { pay_period } = req.body;
+
+  if (pay_period !== null && typeof pay_period !== 'number') {
+    return res.status(400).json({ error: 'Income must be a number or null' });
+  }
+
+  try {
+    const updatedUser: UserRecord | null = await updateUser(userId, { pay_period });
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    return res.json(updatedUser);
+  } catch (err) {
+    console.error('Failed to update pay period:', err);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // Start server
 const startServer = (port: number): Server => {
   const server = app.listen(port, () => {
@@ -53,5 +101,6 @@ startServer(initialPort);
 verifyDatabaseConnection().catch((error) => {
   console.error('[database]: PostgreSQL connection failed', error);
 });
+
 
 export default app;
