@@ -6,6 +6,7 @@ import Shop from './pages/Shop'
 import Layout from './Layout';
 import Socials from './pages/Socials';
 import Expenditure from './pages/Expenditure';
+import Login from './pages/Login';
 
 function WithLayout() {
   return (
@@ -19,6 +20,7 @@ function Pages() {
   return (
     <>
       <Routes>
+        <Route path="/login" element={<Login />} />
         {/* <Route path="/signup" element={<Signup />}/>
         <Route path="/signin" element={<Signin />}/> */}
         <Route element={<WithLayout />}>
