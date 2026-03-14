@@ -1,2 +1,2 @@
-// Utils folder - for helper functions and utilities
-// Add shared utility functions here as needed
+export { execute, query, queryOne, withTransaction } from './db';
+export type { QueryParams } from './db';
