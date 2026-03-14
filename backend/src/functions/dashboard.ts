@@ -12,7 +12,9 @@ export interface UserBudgetSummary {
 export interface UserProfileBundle {
 	user_id: string;
 	email: string;
+	username: string;
 	name: string;
+	profile_picture: string | null;
 	points: number;
 	income: string | null;
 	pay_period: number | null;
@@ -24,6 +26,7 @@ export interface UserProfileBundle {
 		state: string | null;
 		experience: number;
 		inactivity: number;
+		equipped_items: string[];
 	} | null;
 	categories: Array<{
 		category_id: string;
@@ -71,7 +74,9 @@ export const getUserProfileBundle = async (
 		`SELECT
 			u.user_id,
 			u.email,
+			u.username,
 			u.name,
+			u.profile_picture,
 			u.points,
 			u.income,
 			u.pay_period,
@@ -83,7 +88,8 @@ export const getUserProfileBundle = async (
 					'hearts', p.hearts,
 					'state', p.state,
 					'experience', p.experience,
-					'inactivity', p.inactivity
+					'inactivity', p.inactivity,
+					'equipped_items', p.equipped_items
 				)
 				FROM pet p
 				WHERE p.user_id = u.user_id

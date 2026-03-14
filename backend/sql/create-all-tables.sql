@@ -3,7 +3,10 @@ CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 CREATE TABLE users (
     user_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email TEXT NOT NULL UNIQUE,
+    username TEXT NOT NULL UNIQUE,
     name TEXT NOT NULL,
+    password TEXT NOT NULL,
+    profile_picture TEXT,
     points INTEGER DEFAULT 0,
     income NUMERIC(10,2),
     pay_period INTEGER,
@@ -18,6 +21,7 @@ CREATE TABLE pet (
     state TEXT,
     experience INTEGER DEFAULT 0,
     inactivity INTEGER DEFAULT 0,
+    equipped_items JSONB NOT NULL DEFAULT '[]'::jsonb,
 
     CONSTRAINT fk_pet_user
         FOREIGN KEY (user_id)
