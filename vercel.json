@@ -1,5 +1,16 @@
 {
-  "buildCommand": "cd frontend/two-cents-app && npm install --legacy-peer-deps && npm run build",
-  "outputDirectory": "frontend/two-cents-app/dist",
-  "framework": "vite"
+  "builds": [
+    {
+      "src": "frontend/two-cents-app/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist",
+        "installCommand": "npm install --legacy-peer-deps",
+        "buildCommand": "npm run build"
+      }
+    }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "/frontend/two-cents-app/dist/$1" }
+  ]
 }
