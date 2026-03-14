@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { PopUp } from "./popUp";
 
 type ShopItemProps = {
   item : {
@@ -8,10 +10,12 @@ type ShopItemProps = {
   }
 };
 export default function ShopItem({ item } : ShopItemProps) {
+
+
   return (
     <article className="w-[30%] h-30 flex flex-col">
       <div className=" flex items-center flex-col">
-        <img src={item.src} className="w-16 object-contain py-2" />
+        <PopUp item={item}></PopUp>
       </div>
         <span className="text-[7px]">${item.price.toFixed(2)}</span>
       <div className="pl2">
