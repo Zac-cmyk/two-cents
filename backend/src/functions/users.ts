@@ -40,9 +40,9 @@ export const createUser = async (input: CreateUserInput): Promise<UserRecord> =>
 			input.email,
 			input.name,
 			input.points ?? 0,
-			input.income ?? null,
-			input.pay_period ?? null,
-			input.last_active_day ?? null,
+			input.income ?? 0,
+			input.pay_period ?? 0,
+			input.last_active_day ?? new Date().toISOString().split('T')[0],
 		]
 	);
 
