@@ -30,7 +30,7 @@ function Hearts({ count }) {
 
 function PetCard({ pet }) {
   return (
-    <div className="mx-4 mb-4">
+    <div className="mx-4">
       <div className=" bg-[#2a2a5e] rounded-2xl overflow-hidden">
         <div className="relative bg-[#3a3a7e] h-48 flex items-center justify-center">
           <div className="absolute top-3 left-3 flex flex-col gap-2"> 
@@ -43,19 +43,6 @@ function PetCard({ pet }) {
         </div>
       </div>
       <p className="text-white text-center py-3 font-semibold">{pet.name}</p>
-    </div>
-  )
-}
-
-function CategoryBar({ spent, budget }) {
-  const percent = Math.min((spent / budget) * 100, 100)
-  const color = percent > 90 ? '#f87171' : percent > 60 ? '#facc15' : '#a3e635'
-  return (
-    <div className="w-full h-full absolute top-0 left-0 rounded-lg overflow-hidden -z-10">
-      <div
-        className="h-full rounded-lg transition-all"
-        style={{ width: `${percent}%`, backgroundColor: color, opacity: 0.3 }}
-      />
     </div>
   )
 }
@@ -83,24 +70,19 @@ function CategoryItem({ category, onPress }) {
 }
 
 export default function Home() {
-  const [data, setData] = useState(MOCK_DATA)
-  const [loading, setLoading] = useState(false)
+  const [data, setData] = useState(MOCK_DATA); // fix this later 
   const navigate = useNavigate()
 
   useEffect(() => {
     // get data in here through backend call 
   }, [])
 
-  function handleCategoryPress(category) {
+  function handleCategoryPress(category) { // fix this later
     navigate(`/expenditure/${category.id}`, { state: { category } })
   }
 
-  if (loading) {
-    return <div className="flex-1 flex items-center justify-center text-white">Loading...</div>
-  }
-
   return (
-    <div className="flex flex-col py-4 gap-4">
+    <div className="flex flex-col mb-4 gap-4">
       <PetCard pet={data.pet} />
 
       <div className="px-4">
