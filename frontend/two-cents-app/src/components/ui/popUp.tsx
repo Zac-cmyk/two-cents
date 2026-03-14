@@ -38,7 +38,7 @@ export function PopUp({item} : PopUpProps) {
           <img onClick={triggerPopup}
           src={item.src} className="w-16 object-contain py-2 hover:shadow hover:scale-110 hover:cursor-pointer drop-shadow-[0_4px_6px_rgba(255,0,0,0.5)]" />
         </DialogTrigger>
-        <DialogContent className="sm:max-w-sm bg-white/90 drop-shadow-[0_4px_6px_rgba(255,255,255,0.5)] border-0 outline-none">
+        <DialogContent className="sm:max-w-sm bg-white/90 drop-shadow-[0_4px_6px_rgba(255,255,255,0.5)]">
           <DialogHeader>
             <DialogTitle>buy {item.name}</DialogTitle>
             <DialogDescription>
@@ -54,8 +54,8 @@ export function PopUp({item} : PopUpProps) {
                 type="number"
                 defaultValue={1}
                 min={1}
-                max={99}
-                placeholder="Numbers only!"
+                max={10}
+                placeholder="max 10 items can be purchaased!"
               />
               </Field>
               <FieldDescription>Your total price is</FieldDescription>
@@ -64,7 +64,7 @@ export function PopUp({item} : PopUpProps) {
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button type="submit">Save changes</Button>
+            <Button type="submit">Buy</Button>
           </DialogFooter>
         </DialogContent>
       </form>
