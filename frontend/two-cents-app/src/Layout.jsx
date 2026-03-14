@@ -14,7 +14,7 @@ function Header() {
   }
 
   return (
-    <header className="bg-[#1a1a2e] text-white px-4 py-3 flex justify-between items-center">
+    <header className=" text-white px-4 py-3 flex justify-between items-center">
       <button className="w-8 h-8 flex items-center justify-center">
         <Menu size={20} />
       </button>
