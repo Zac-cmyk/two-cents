@@ -6,7 +6,9 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <Pages />
+        <div className='w-[400px] h-[600px] overflow-y-auto'>
+          <Pages />
+        </div>
       </BrowserRouter>
     </>
   )
