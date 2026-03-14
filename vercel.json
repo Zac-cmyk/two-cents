@@ -1,7 +1,5 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "cd frontend/two-cents-app && npm install --legacy-peer-deps && npm run build",
   "outputDirectory": "frontend/two-cents-app/dist",
-  "installCommand": "npm install --legacy-peer-deps",
-  "framework": "vite",
-  "rootDirectory": "frontend/two-cents-app"
+  "framework": "vite"
 }
