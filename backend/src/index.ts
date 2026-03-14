@@ -27,6 +27,9 @@ app.get('/', (req, res) => {
 import { healthRouter } from './routes/health.routes';
 app.use('/api/health', healthRouter);
 
+import { categoryRouter } from './routes/category.routes';
+app.use('/api/category', categoryRouter);
+
 // Start server
 const startServer = (port: number): Server => {
   const server = app.listen(port, () => {
