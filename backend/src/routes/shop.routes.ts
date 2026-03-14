@@ -26,6 +26,7 @@ shopRouter.post('/', async (req: Request, res: Response) => {
     const shop = await createShopForUser(userId);
     return res.status(201).json(shop);
   } catch (error) {
+    console.error('Error creating shop', error);
     return res.status(500).json({ error: 'Failed to create shop' });
   }
 });

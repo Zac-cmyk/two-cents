@@ -31,7 +31,7 @@ import { categoryRouter } from './routes/category.routes';
 app.use('/api/category', categoryRouter);
 
 import { shopRouter } from './routes/shop.routes';
-app.use('/api/shops')
+app.use('/api/shops', shopRouter);
 
 // Start server
 const startServer = (port: number): Server => {
