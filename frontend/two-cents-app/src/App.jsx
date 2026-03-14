@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <div className='w-[400px] h-[600px] overflow-y-auto'>
+        <div className='w-[400px] h-[600px] overflow-y-auto bg-[#2a2852]'>
           <Pages />
         </div>
       </BrowserRouter>
