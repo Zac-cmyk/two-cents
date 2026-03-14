@@ -8,6 +8,7 @@ export interface PetRecord {
 	state: string | null;
 	experience: number;
 	inactivity: number;
+	equipped_items: string[];
 }
 
 export interface CreatePetInput {
@@ -17,6 +18,7 @@ export interface CreatePetInput {
 	state?: string | null;
 	experience?: number;
 	inactivity?: number;
+	equipped_items?: string[];
 }
 
 export interface UpdatePetInput {
@@ -25,14 +27,16 @@ export interface UpdatePetInput {
 	state?: string | null;
 	experience?: number;
 	inactivity?: number;
+	equipped_items?: string[];
 }
 
-const petSelectFields = 'pet_id, user_id, health, hearts, state, experience, inactivity';
+const petSelectFields =
+	'pet_id, user_id, health, hearts, state, experience, inactivity, equipped_items';
 
 export const createPetForUser = async (input: CreatePetInput): Promise<PetRecord> => {
 	const row = await queryOne<PetRecord>(
-		`INSERT INTO pet (user_id, health, hearts, state, experience, inactivity)
-		 VALUES ($1, $2, $3, $4, $5, $6)
+		`INSERT INTO pet (user_id, health, hearts, state, experience, inactivity, equipped_items)
+		 VALUES ($1, $2, $3, $4, $5, $6, $7::jsonb)
 		 RETURNING ${petSelectFields}`,
 		[
 			input.user_id,
@@ -41,6 +45,7 @@ export const createPetForUser = async (input: CreatePetInput): Promise<PetRecord
 			input.state ?? null,
 			input.experience ?? 0,
 			input.inactivity ?? 0,
+			JSON.stringify(input.equipped_items ?? []),
 		]
 	);
 
@@ -65,7 +70,8 @@ export const updatePetByUserId = async (
 		     hearts = COALESCE($3, hearts),
 		     state = COALESCE($4, state),
 		     experience = COALESCE($5, experience),
-		     inactivity = COALESCE($6, inactivity)
+		     inactivity = COALESCE($6, inactivity),
+		     equipped_items = COALESCE($7::jsonb, equipped_items)
 		 WHERE user_id = $1
 		 RETURNING ${petSelectFields}`,
 		[
@@ -75,6 +81,7 @@ export const updatePetByUserId = async (
 			input.state ?? null,
 			input.experience ?? null,
 			input.inactivity ?? null,
+			input.equipped_items ? JSON.stringify(input.equipped_items) : null,
 		]
 	);
 };

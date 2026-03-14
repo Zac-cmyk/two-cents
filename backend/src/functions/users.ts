@@ -3,16 +3,28 @@ import { execute, query, queryOne } from '../utils';
 export interface UserRecord {
 	user_id: string;
 	email: string;
+	username: string;
 	name: string;
+	profile_picture: string | null;
 	points: number;
 	income: string | null;
 	pay_period: number | null;
 	last_active_day: string | null;
 }
 
+export interface UserAuthRecord {
+	user_id: string;
+	email: string;
+	username: string;
+	password: string;
+}
+
 export interface CreateUserInput {
 	email: string;
+	username: string;
 	name: string;
+	password: string;
+	profile_picture?: string | null;
 	points?: number;
 	income?: number | null;
 	pay_period?: number | null;
@@ -21,7 +33,10 @@ export interface CreateUserInput {
 
 export interface UpdateUserInput {
 	email?: string;
+	username?: string;
 	name?: string;
+	password?: string;
+	profile_picture?: string | null;
 	points?: number;
 	income?: number | null;
 	pay_period?: number | null;
@@ -29,16 +44,19 @@ export interface UpdateUserInput {
 }
 
 const userSelectFields =
-	'user_id, email, name, points, income, pay_period, last_active_day';
+	'user_id, email, username, name, profile_picture, points, income, pay_period, last_active_day';
 
 export const createUser = async (input: CreateUserInput): Promise<UserRecord> => {
 	const row = await queryOne<UserRecord>(
-		`INSERT INTO users (email, name, points, income, pay_period, last_active_day)
-		 VALUES ($1, $2, $3, $4, $5, $6)
+		`INSERT INTO users (email, username, name, password, profile_picture, points, income, pay_period, last_active_day)
+		 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
 		 RETURNING ${userSelectFields}`,
 		[
 			input.email,
+			input.username,
 			input.name,
+			input.password,
+			input.profile_picture ?? null,
 			input.points ?? 0,
 			input.income ?? null,
 			input.pay_period ?? null,
@@ -68,6 +86,21 @@ export const getUserByEmail = async (email: string): Promise<UserRecord | null> 
 	return queryOne<UserRecord>(`SELECT ${userSelectFields} FROM users WHERE email = $1`, [email]);
 };
 
+export const getUserByUsername = async (username: string): Promise<UserRecord | null> => {
+	return queryOne<UserRecord>(`SELECT ${userSelectFields} FROM users WHERE username = $1`, [username]);
+};
+
+export const getUserAuthByEmailOrUsername = async (
+	identifier: string
+): Promise<UserAuthRecord | null> => {
+	return queryOne<UserAuthRecord>(
+		`SELECT user_id, email, username, password
+		 FROM users
+		 WHERE email = $1 OR username = $1`,
+		[identifier]
+	);
+};
+
 export const updateUser = async (
 	userId: string,
 	input: UpdateUserInput
@@ -75,17 +108,23 @@ export const updateUser = async (
 	return queryOne<UserRecord>(
 		`UPDATE users
 		 SET email = COALESCE($2, email),
-		     name = COALESCE($3, name),
-		     points = COALESCE($4, points),
-		     income = COALESCE($5, income),
-		     pay_period = COALESCE($6, pay_period),
-		     last_active_day = COALESCE($7, last_active_day)
+		     username = COALESCE($3, username),
+		     name = COALESCE($4, name),
+		     password = COALESCE($5, password),
+		     profile_picture = COALESCE($6, profile_picture),
+		     points = COALESCE($7, points),
+		     income = COALESCE($8, income),
+		     pay_period = COALESCE($9, pay_period),
+		     last_active_day = COALESCE($10, last_active_day)
 		 WHERE user_id = $1
 		 RETURNING ${userSelectFields}`,
 		[
 			userId,
 			input.email ?? null,
+			input.username ?? null,
 			input.name ?? null,
+			input.password ?? null,
+			input.profile_picture ?? null,
 			input.points ?? null,
 			input.income ?? null,
 			input.pay_period ?? null,
