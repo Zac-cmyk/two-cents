@@ -1,16 +1,16 @@
 -- Active: 1773474530675@@two-cents-postgres.cbcse2moaurb.ap-southeast-2.rds.amazonaws.com@5432@postgres
 
 -- Optional reset so script is repeatable
-TRUNCATE TABLE shop_item, shop, category, pet, users CASCADE;
+TRUNCATE TABLE user_session, shop_item, shop, category, pet, users CASCADE;
 
 -- 1) Users
 INSERT INTO users (user_id, email, username, name, password, profile_picture, points, income, pay_period, last_active_day)
 VALUES
-	('c1a5f8d2-3b44-4d17-9c9b-2f6b0b2f5a11', 'alice@example.com', 'alicej', 'Alice Johnson', '$2b$10$exampleHashAlice', 'https://i.pravatar.cc/150?img=1', 1200, 75000.00, 14, '2026-03-14'),
-	('7e2d9a60-6c13-4f2a-8d4c-9b7f2c1a4e22', 'bob@example.com', 'bobsmith', 'Bob Smith', '$2b$10$exampleHashBob', 'https://i.pravatar.cc/150?img=2', 450, 52000.00, 30, '2026-03-13'),
-	('0f4b71c3-9a6e-4c8d-a143-5e2a9d7b3f33', 'charlie@example.com', 'charlieb', 'Charlie Brown', '$2b$10$exampleHashCharlie', 'https://i.pravatar.cc/150?img=3', 90, 90000.00, 7, '2026-03-10'),
-	('5d3a2e19-1f75-4b6c-b82d-4a9e6f1c8d44', 'diana@example.com', 'dianap', 'Diana Prince', '$2b$10$exampleHashDiana', 'https://i.pravatar.cc/150?img=4', 880, 120000.00, 14, '2026-03-14'),
-	('a9c4e730-2d8b-4f95-9e21-c7d4b6a1f555', 'evan@example.com', 'evanw', 'Evan Williams', '$2b$10$exampleHashEvan', 'https://i.pravatar.cc/150?img=5', 300, 48000.00, 30, '2026-03-12');
+	('c1a5f8d2-3b44-4d17-9c9b-2f6b0b2f5a11', 'alice@example.com', 'alicej', 'Alice Johnson', 'Password123!', 'https://i.pravatar.cc/150?img=1', 1200, 75000.00, 14, '2026-03-14'),
+	('7e2d9a60-6c13-4f2a-8d4c-9b7f2c1a4e22', 'bob@example.com', 'bobsmith', 'Bob Smith', 'Password123!', 'https://i.pravatar.cc/150?img=2', 450, 52000.00, 30, '2026-03-13'),
+	('0f4b71c3-9a6e-4c8d-a143-5e2a9d7b3f33', 'charlie@example.com', 'charlieb', 'Charlie Brown', 'Password123!', 'https://i.pravatar.cc/150?img=3', 90, 90000.00, 7, '2026-03-10'),
+	('5d3a2e19-1f75-4b6c-b82d-4a9e6f1c8d44', 'diana@example.com', 'dianap', 'Diana Prince', 'Password123!', 'https://i.pravatar.cc/150?img=4', 880, 120000.00, 14, '2026-03-14'),
+	('a9c4e730-2d8b-4f95-9e21-c7d4b6a1f555', 'evan@example.com', 'evanw', 'Evan Williams', 'Password123!', 'https://i.pravatar.cc/150?img=5', 300, 48000.00, 30, '2026-03-12');
 
 -- 2) Pet (1 per user)
 INSERT INTO pet (pet_id, user_id, health, hearts, state, experience, inactivity, equipped_items)
@@ -53,6 +53,7 @@ VALUES
 
 -- Quick verification
 SELECT 'users' AS table_name, COUNT(*) AS rows FROM users
+UNION ALL SELECT 'user_session', COUNT(*) FROM user_session
 UNION ALL SELECT 'pet', COUNT(*) FROM pet
 UNION ALL SELECT 'category', COUNT(*) FROM category
 UNION ALL SELECT 'shop', COUNT(*) FROM shop
