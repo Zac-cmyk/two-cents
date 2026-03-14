@@ -1,94 +1,50 @@
-# Two Cents Frontend
+# Welcome to your Expo app 👋
 
-React Native frontend for the Two Cents application built with Expo.
+This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
-## Getting Started
+## Get started
 
-### Prerequisites
-- Node.js (v16 or higher)
-- npm or yarn
-- Expo CLI: `npm install -g expo-cli`
+1. Install dependencies
 
-### Installation
+   ```bash
+   npm install
+   ```
 
-1. Install dependencies:
+2. Start the app
+
+   ```bash
+   npx expo start
+   ```
+
+In the output, you'll find options to open the app in a
+
+- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
+- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
+- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
+- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+
+You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+
+## Get a fresh project
+
+When you're ready, run:
+
 ```bash
-npm install
+npm run reset-project
 ```
 
-2. Create a `.env` file based on `.env.example`:
-```bash
-cp .env.example .env
-```
+This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
-3. Update the `.env` file with your API configuration.
+## Learn more
 
-### Development
+To learn more about developing your project with Expo, look at the following resources:
 
-Start the development server:
-```bash
-npm start
-```
+- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
+- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
 
-Then choose your platform:
-- **iOS**: Press `i`
-- **Android**: Press `a`
-- **Web**: Press `w`
+## Join the community
 
-### Building
+Join our community of developers creating universal apps.
 
-Build the app for iOS:
-```bash
-npm run ios
-```
-
-Build the app for Android:
-```bash
-npm run android
-```
-
-Build for web:
-```bash
-npm run web
-```
-
-### Linting and Formatting
-
-Lint the code:
-```bash
-npm run lint
-```
-
-Format the code:
-```bash
-npm run format
-```
-
-## Project Structure
-
-```
-src/
-├── App.tsx                  # Root component
-├── assets/                  # Images, fonts, etc.
-├── components/              # Reusable components
-├── context/                 # React context for state management
-├── hooks/                   # Custom React hooks
-├── navigation/              # Navigation configuration
-├── screens/                 # Screen components
-├── services/                # API services
-└── utils/                   # Utility functions
-```
-
-## Environment Variables
-
-Configure your API endpoint in `.env`:
-```
-EXPO_PUBLIC_API_URL=http://your-api-url/api
-EXPO_PUBLIC_ENVIRONMENT=development
-```
-
-## Documentation
-
-- [Expo Documentation](https://docs.expo.dev/)
-- [React Native Documentation](https://reactnative.dev/)
-- [React Navigation](https://reactnavigation.org/)
+- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
+- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
