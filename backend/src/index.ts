@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import { updateUser, UserRecord } from './functions/users';
+import { getUserById, updateUser, UserRecord } from './functions/users';
 import { Request, Response } from 'express';
 
 import express, { Express } from 'express';
@@ -71,6 +71,42 @@ app.put('/users/:userId/pay_period', async (req: Request, res: Response) => {
     return res.json(updatedUser);
   } catch (err) {
     console.error('Failed to update pay period:', err);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// set last active day to current day.
+app.put('/users/:userId/active_day', async (req: Request, res: Response) => {
+  const { userId } = req.params;
+
+  try {
+    const updatedUser: UserRecord | null = await updateUser(userId, { last_active_day: new Date().toISOString().split('T')[0] });
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    return res.json(updatedUser);
+  } catch (err) {
+    console.error('Failed to update pay period:', err);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// get user details
+app.get('/users/:userId', async (req: Request, res: Response) => {
+  const { userId } = req.params;
+
+  try {
+    const user: UserRecord | null = await getUserById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    return res.json(user);
+  } catch (err) {
+    console.error('Failed to update get user:', err);
     return res.status(500).json({ error: 'Internal server error' });
   }
 });
