@@ -33,6 +33,7 @@ function PetCard({ pet }) {
     <div className="mx-8">
       <div className=" bg-[#2a2a5e] rounded-2xl overflow-hidden">
         <div className="relative bg-[#3a3a7e] h-48 flex items-center justify-center">
+          <img src="./src/assets/beach.gif" />
           <div className="absolute top-3 left-3 flex flex-col gap-2"> 
             <Hearts count={pet.hearts} max={pet.maxHearts} />
             <Progress
