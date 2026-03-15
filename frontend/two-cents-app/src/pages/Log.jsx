@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ShoppingBag, Plane, Tv, MoreHorizontal, UtensilsCrossed } from 'lucide-react'
 
-// fix the data here 
+// fix the data here - find a way to get the categories from backend and then pass it in (need to adjust accordingly) 
 const CATEGORIES = [
   { id: 'food', label: 'Food', icon: UtensilsCrossed },
   { id: 'entertainment', label: 'Entertainment', icon: Tv },
@@ -30,12 +30,12 @@ export default function Log() {
             placeholder="0.00"
             value={amount}
             onChange={e => setAmount(e.target.value)}
-            className="text-3xl font-bold text-gray-800 w-full outline-none placeholder:text-gray-300"
+            className="text-3xl font-bold text-gray-800 w-full outline-none placeholder:text-gray-550"
           />
         </div>
       </div>
 
-     <div className="bg-white rounded-2xl p-4">
+     <div className="bg-[#d9d9d9] rounded-2xl p-4">
         <p className="text-gray-800 text-sm font-bold mb-4">Select a category</p>
         <div className="flex flex-wrap gap-2">
           {CATEGORIES.map(cat => {
