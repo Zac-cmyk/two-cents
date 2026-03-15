@@ -61,7 +61,7 @@ function Footer() {
   const location = useLocation()
 
   const tabs = [
-    { to: '/', icon: Home, label: 'Home' },
+    { to: '/home', icon: Home, label: 'Home' },
     { to: '/shop', icon: ShoppingCart, label: 'Shop' },
     { to: '/socials', icon: Users, label: 'Social' },
     { to: '/log', icon: PiggyBank, label: 'Log' },

@@ -46,7 +46,7 @@ export default function SignUp() {
         name: username.trim(),
         password,
       })
-      navigate('/')
+      navigate('/home')
     } catch (error) {
       setErrorMessage(getApiErrorMessage(error, 'Registration failed'))
     } finally {
@@ -56,7 +56,7 @@ export default function SignUp() {
 
   const googleLogin = async () => {
     await signInWithGoogle();
-    navigate("/");
+    navigate("/home");
   }
 
   return (

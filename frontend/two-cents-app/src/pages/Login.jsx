@@ -19,7 +19,7 @@ export default function Login() {
 
   const googleLogin = async () => {
     await signInWithGoogle();
-    navigate("/");
+    navigate("/home");
   }
 
   const handleLogin = async () => {
@@ -36,7 +36,7 @@ export default function Login() {
         identifier: identifier.trim(),
         password,
       })
-      navigate("/")
+      navigate("/home")
     } catch (error) {
       setErrorMessage(getApiErrorMessage(error, 'Login failed'))
     } finally {
