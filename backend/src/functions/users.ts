@@ -1,4 +1,5 @@
 import { execute, query, queryOne } from '../utils';
+import { hashPassword } from '../utils/password';
 
 export interface UserRecord {
 	user_id: string;
@@ -47,6 +48,8 @@ const userSelectFields =
 	'user_id, email, username, name, profile_picture, points, income, pay_period, last_active_day';
 
 export const createUser = async (input: CreateUserInput): Promise<UserRecord> => {
+	const hashedPassword = hashPassword(input.password);
+
 	const row = await queryOne<UserRecord>(
 		`INSERT INTO users (email, username, name, password, profile_picture, points, income, pay_period, last_active_day)
 		 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
@@ -55,7 +58,7 @@ export const createUser = async (input: CreateUserInput): Promise<UserRecord> =>
 			input.email,
 			input.username,
 			input.name,
-			input.password,
+			hashedPassword,
 			input.profile_picture ?? null,
 			input.points ?? 0,
 			input.income ?? null,
@@ -105,6 +108,8 @@ export const updateUser = async (
 	userId: string,
 	input: UpdateUserInput
 ): Promise<UserRecord | null> => {
+	const hashedPassword = input.password ? hashPassword(input.password) : null;
+
 	return queryOne<UserRecord>(
 		`UPDATE users
 		 SET email = COALESCE($2, email),
@@ -123,7 +128,7 @@ export const updateUser = async (
 			input.email ?? null,
 			input.username ?? null,
 			input.name ?? null,
-			input.password ?? null,
+			hashedPassword,
 			input.profile_picture ?? null,
 			input.points ?? null,
 			input.income ?? null,

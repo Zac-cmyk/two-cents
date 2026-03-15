@@ -30,7 +30,7 @@ function Hearts({ count }) {
 
 function PetCard({ pet }) {
   return (
-    <div className="mx-4">
+    <div className="mx-8">
       <div className=" bg-[#2a2a5e] rounded-2xl overflow-hidden">
         <div className="relative bg-[#3a3a7e] h-48 flex items-center justify-center">
           <div className="absolute top-3 left-3 flex flex-col gap-2"> 
@@ -53,7 +53,7 @@ function CategoryItem({ category, onPress }) {
   return (
     <button
       onClick={() => onPress(category)}
-      className="relative w-full bg-[#d9d9d9] p-3 flex justify-between items-center text-left"
+      className="relative w-full bg-[#d9d9d9] py-1 px-4 flex justify-between items-center text-left"
     >
       <div
         className="absolute inset-y-0 left-0 bg-[#e1d799]"
@@ -61,11 +61,25 @@ function CategoryItem({ category, onPress }) {
       />
 
       <div className="relative z-10">
-        <p className="text-black font-bold text-sm">{category.name}</p>
+        <p className="text-black font-bold text-m">{category.name}</p>
         <p className="text-black text-xs">${category.spent} out of ${category.budget}</p>
       </div>
       <span className="text-black text-lg">···</span>
     </button>
+  )
+}
+
+function WeeklySavings({ category }) {
+  return (
+    <div className="px-8">
+      <p className="text-white font-bold text-xl text-right mt-5 pb-1">Weekly Savings</p>
+      <p className="text-white text-xs text-right">congrats! you've saved ___ this week</p>
+      <div className="flex justify-center text-center text-white w-full my-4">
+        money falling? <br/>
+        some image is going here idk man
+      </div>
+
+    </div>
   )
 }
 
@@ -78,16 +92,16 @@ export default function Home() {
   }, [])
 
   function handleCategoryPress(category) { // fix this later
-    navigate(`/expenditure/${category.id}`, { state: { category } })
+    navigate(`/home/${category.id}`, { state: { category } })
   }
 
   return (
     <div className="flex flex-col mb-4 gap-4">
       <PetCard pet={data.pet} />
 
-      <div className="px-4">
+      <div className="px-8">
         <div className="flex justify-between items-center mb-3">
-          <h2 className="text-white font-bold text-lg">Weekly Expenditure</h2>
+          <h2 className="text-white font-bold text-xl">Weekly Expenditure</h2>
           <button className="text-white text-2xl leading-none">+</button>
         </div>
 
@@ -101,6 +115,8 @@ export default function Home() {
           ))}
         </div>
       </div>
+
+      <WeeklySavings />
     </div>
   )
 }
