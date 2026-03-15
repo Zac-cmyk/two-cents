@@ -1,6 +1,7 @@
 import ShopItem from "@/components/ui/shopItem";
 import example from "../assets/example.png";
-import squeakyMouse from "../assets/mouse.gif";
+import squeakyMouse from "../assets/mouseItem.gif";
+import bowtie from "../assets/bowtieItem.png";
 
 
 function Shop() {
@@ -9,7 +10,7 @@ function Shop() {
     { name: "a can of tuna", src: example,  desc: "a nice delicacy for your cat. doesn’t smell good though", price: 4.50, colour: "drop-shadow-[0_4px_6px_rgba(255,0,0,0.5)]" },
     { name: "swat-a-fish", src: example, desc: "a cute fish on a string to play with. very, very distracting", price: 10.00, colour: "drop-shadow-[0_4px_6px_rgba(255,0,0,0.5)]" },
     { name: "catnip", src: example, desc: "drugs for your cat. a nice treat for a nice while!", price: 32.00, colour: "drop-shadow-[0_4px_6px_rgba(255,0,0,0.5)]" },
-    { name: "bowtie", src: example, desc: "a shiny pretty bow to tie!", price: 7.00, colour: "drop-shadow-[0_4px_6px_rgba(255,0,0,0.5)]" },
+    { name: "bowtie", src: bowtie, desc: "a shiny pretty bow! comes with a bell.", price: 7.00, colour: "drop-shadow-[0_4px_6px_rgba(255,0,0,0.5)]" },
     { name: "squeaky mouse", src: squeakyMouse, desc: "a plush mouse with a wiggly tail!", price: 12.50, colour: "drop-shadow-[0_4px_6px_rgba(255,255,255,0.5)]" },
     { name: "ball of yarn", src: example, desc: "string that unrolls until there’s no more ball left.", price: 3.00, colour: "drop-shadow-[0_4px_6px_rgba(255,0,0,0.5)]" }
 

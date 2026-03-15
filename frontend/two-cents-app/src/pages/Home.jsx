@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Progress } from '@/components/ui/progress'
 import { Button } from '@/components/ui/button'
+import happyCat from '../assets/happyCat.gif'
+import bowtie from '../assets/bowtie.png'
 
 const MOCK_DATA = {
   pet: { name: 'skinny', hearts: 3, maxHearts: 4, healthPercent: 60 },
@@ -40,6 +42,9 @@ function PetCard({ pet }) {
               className="w-24"
             />    
           </div>
+            <img className="w-50" src={happyCat}></img>
+            {/* TODO: toggle on and off if bowtie is purchased */}
+            <img className="w-50 absolute" src={bowtie}></img>
         </div>
       </div>
       <p className="text-white text-center py-3 font-semibold">{pet.name}</p>
