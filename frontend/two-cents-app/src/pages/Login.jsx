@@ -1,7 +1,8 @@
 
-import { Field, FieldDescription, FieldLabel } from "@/components/ui/field"
+import { Field, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import GoogleIcon from "@/assets/google.svg"
+import logo from "../assets/logo.gif"
 
 import { Button } from "@/components/ui/button"
 import { signInWithGoogle } from "../hooks/useAuth"
@@ -10,10 +11,10 @@ import { useState } from "react"
 import { authApi, getApiErrorMessage } from "@/api"
 
 export default function Login() {
-  const [identifier, setIdentifier] = useState("")
-  const [password, setPassword] = useState("")
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [errorMessage, setErrorMessage] = useState("")
+  const [ identifier, setIdentifier] = useState("")
+  const [ password, setPassword] = useState("")
+  const [ isSubmitting, setIsSubmitting] = useState(false)
+  const [ errorMessage, setErrorMessage] = useState("")
 
   const navigate = useNavigate();
 
@@ -48,8 +49,8 @@ export default function Login() {
     <>
     <div className="w-full h-full border flex items-centre justify-centre flex-col gap-5 p-12 bg-[#2b2753] text-white">
 
-      <div className="my-4">
-        <h1 className="text-3xl font-bold text-[#e2d799]">2cents</h1>
+      <div className="w-20">
+        <img src={logo}></img>
       </div>
 
       <h1 className="text-2xl font-bold">welcome back, login here!</h1>

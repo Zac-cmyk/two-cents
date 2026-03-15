@@ -9,14 +9,16 @@ import { signInWithGoogle } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { authApi, getApiErrorMessage } from "@/api";
 
+import logo from "../assets/logo.gif"
+
 export default function SignUp() {
 
   const [ username, setUsername ] = useState("");
   const [ moveOn, setMoveOn ] = useState(false);
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [errorMessage, setErrorMessage] = useState("")
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [ email, setEmail] = useState("")
+  const [ password, setPassword] = useState("")
+  const [ errorMessage, setErrorMessage] = useState("")
+  const [ isSubmitting, setIsSubmitting] = useState(false)
 
   const navigate = useNavigate();
 
@@ -63,9 +65,9 @@ export default function SignUp() {
     <>
     <div className="w-full h-full border flex items-centre justify-centre flex-col gap-5 p-12 bg-[#2b2753] text-white">
 
-      <div className="my-4">
-        <h1 className="text-3xl font-bold text-[#e2d799]">2cents</h1>
-      </div>
+    <div className="w-20">
+      <img src={logo} ></img>
+    </div>
 
       <h1 className="text-2xl font-bold">create an account!</h1>
 
@@ -112,7 +114,7 @@ export default function SignUp() {
            Continue with Google
          </Button>
 
-         <span className="text-xs">already have an account yet? <a className="hover:underline" href="/login">log in!</a></span>
+         <span className="text-xs">already have an account yet? <a className="hover:underline" href="/">log in!</a></span>
      </div>
     </>
 
