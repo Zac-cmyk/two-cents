@@ -69,59 +69,79 @@ export default function Log() {
   }
 
   return (
-    <div className="p-8 flex flex-col gap-4 flex-center items-center">
-      {/* amount input */}
-      <div className="bg-[#d9d9d9] rounded-2xl p-4 flex flex-col gap-3">
-        <p className="text-gray-00 text-sm font-bold">How much did you spend?</p>
-        <div className="flex items-cent8er gap-2">
-          <span className="text-3xl font-bold text-gray-800">$</span>
-          <input
-            type="number"
-            placeholder="0.00"
-            value={amount}
-            onChange={e => setAmount(e.target.value)}
-            className="text-3xl font-bold text-gray-800 w-full outline-none placeholder:text-gray-550"
-          />
+    <div className="min-h-full bg-linear-to-b from-[#1f2347] via-[#252a57] to-[#1b2043] px-5 py-5 text-white">
+      <div className="mx-auto flex w-full max-w-90 flex-col gap-4">
+        <div className="mb-1">
+          <p className="text-xs uppercase tracking-[0.18em] text-white/60">Daily Budget</p>
+          <h1 className="pt-1 text-[24px] leading-none font-semibold">Log Expenditure</h1>
         </div>
-      </div>
 
-      {isLoading && <p className="text-xs text-white">Loading categories...</p>}
-      {errorMessage && <p className="text-xs text-red-300">{errorMessage}</p>}
-      {feedbackMessage && <p className="text-xs text-green-300">{feedbackMessage}</p>}
-
-     <div className="bg-[#d9d9d9] rounded-2xl p-4">
-        <p className="text-gray-800 text-sm font-bold mb-4">Select a category</p>
-        <div className="flex flex-wrap gap-2">
-          {categoryOptions.map(cat => {
-            const Icon = cat.icon
-            const isSelected = selected === cat.id
-            return (
-              <button
-                key={cat.id}
-                onClick={() => setSelected(cat.id)}
-                className={`w-[30%] flex flex-col items-center gap-2 p-2 rounded-xl transition-all ${
-                  isSelected ? 'bg-[#5B4FCF] text-white' : 'text-gray-700 hover:bg-gray-100'
-                }`}
-              >
-                <div className={`w-12 h-12 rounded-full border-2 flex items-center justify-center ${
-                  isSelected ? 'border-white' : 'border-gray-800'
-                }`}>
-                  <Icon size={20} />
-                </div>
-                <span className="text-xs text-center w-full truncate">{cat.label}</span>
-              </button>
-            )
-          })}
+        <div className="rounded-2xl border border-white/18 bg-white/12 p-4 shadow-[0_14px_36px_rgba(5,8,25,0.38)]">
+          <p className="text-sm font-medium text-white/80">How much did you spend?</p>
+          <div className="mt-2 flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-3 py-2.5">
+            <span className="text-[28px] leading-none font-semibold text-white">$</span>
+            <input
+              type="number"
+              placeholder="0.00"
+              value={amount}
+              onChange={event => setAmount(event.target.value)}
+              className="w-full bg-transparent text-[28px] leading-none font-semibold text-white outline-none placeholder:text-white/35"
+            />
+          </div>
         </div>
-      </div>
 
-      <button
-        onClick={handleSubmit}
-        className="w-full bg-[#5B4FCF] text-white rounded-xl py-3 font-semibold disabled:opacity-50"
-        disabled={!amount || !selected || isSubmitting}
-      >
-        {isSubmitting ? 'logging...' : 'log expense'}
-      </button>
+        {isLoading && <p className="text-xs text-white/80">Loading categories...</p>}
+        {errorMessage && (
+          <p className="rounded-xl border border-red-300/30 bg-red-500/10 px-3 py-2 text-xs text-red-200">
+            {errorMessage}
+          </p>
+        )}
+        {feedbackMessage && (
+          <p className="rounded-xl border border-emerald-300/30 bg-emerald-500/10 px-3 py-2 text-xs text-emerald-200">
+            {feedbackMessage}
+          </p>
+        )}
+
+        <div className="rounded-2xl border border-white/18 bg-white/12 p-4 shadow-[0_14px_36px_rgba(5,8,25,0.38)]">
+          <p className="mb-3 text-sm font-medium text-white/80">Select a category</p>
+
+          <div className="grid grid-cols-3 gap-2">
+            {categoryOptions.map(category => {
+              const Icon = category.icon
+              const isSelected = selected === category.id
+
+              return (
+                <button
+                  key={category.id}
+                  onClick={() => setSelected(category.id)}
+                  className={`rounded-xl border px-2 py-2 transition ${
+                    isSelected
+                      ? 'border-[#7d6df2] bg-[#5B4FCF] text-white shadow-[0_8px_18px_rgba(63,50,156,0.5)]'
+                      : 'border-white/12 bg-white/6 text-white/85 hover:bg-white/12'
+                  }`}
+                >
+                  <div
+                    className={`mx-auto flex h-10 w-10 items-center justify-center rounded-full border ${
+                      isSelected ? 'border-white/80' : 'border-white/35'
+                    }`}
+                  >
+                    <Icon size={18} />
+                  </div>
+                  <span className="mt-1 block truncate text-center text-[11px]">{category.label}</span>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+
+        <button
+          onClick={handleSubmit}
+          className="w-full rounded-xl bg-[#5B4FCF] py-3 text-sm font-semibold text-white shadow-[0_10px_22px_rgba(66,50,170,0.45)] disabled:cursor-not-allowed disabled:opacity-50"
+          disabled={!amount || !selected || isSubmitting}
+        >
+          {isSubmitting ? 'Logging...' : 'Log Expense'}
+        </button>
+      </div>
     </div>
   )
 }

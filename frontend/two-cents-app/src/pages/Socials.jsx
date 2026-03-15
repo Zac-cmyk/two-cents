@@ -28,35 +28,59 @@ function Socials() {
   }, [])
 
   return (
-    <div className="bg-[#1e2a4a] min-h-screen p-6">
-      {errorMessage && <p className="text-xs text-red-300 pb-3">{errorMessage}</p>}
-      <h1 className="text-white text-2xl/6 font-black mb-6 flex items-center justify-center">
-          Number of Friends ({user ? 1 : 0})
-      </h1>
-      <input
-        type="text"
-        placeholder="Search friends..."
-        className="w-19/20 bg-[#2a3a5c] text-white placeholder-gray-400 rounded-4xl px-4 py-2 mb-2 outline-none focus:ring-1 focus:ring-white"
-        disabled
-      />
+    <div className="min-h-full bg-linear-to-b from-[#1f2347] via-[#252a57] to-[#1b2043] px-5 py-5 text-white">
+      <div className="mx-auto w-full max-w-90">
+        {errorMessage && (
+          <p className="mb-3 rounded-xl border border-red-300/30 bg-red-500/10 px-3 py-2 text-xs text-red-200">
+            {errorMessage}
+          </p>
+        )}
 
-      {user && (
-      <Link to={`/socials/${user.username}`}>
-        <div className="bg-gray-400 w-19/20 rounded-xl p-3 flex items-center gap-3 relative border-4 border-white my-4">
-          <span className="absolute top-2 right-3 text-gray-500 text-xs">
-            {user.last_active_day ? `Last active ${user.last_active_day}` : 'No activity yet'}
-          </span>
-          <div className="bg-gray-500 rounded-full w-13 h-13 flex items-center justify-center overflow-hidden shrink-0">
-            <img src={user.profile_picture || 'https://placehold.co/48'} alt="avatar" className="w-8 h-8 object-contain rounded-full"/>
-          </div>
+        <div className="mb-4 flex items-end justify-between">
           <div>
-            <p className="font-bold text-gray-800 text-m">Lv. {pet?.level || 1}</p>
-            <p className="text-gray-600 text-m">{user.username}</p>
+            <p className="text-xs uppercase tracking-[0.18em] text-white/60">Social</p>
+            <h1 className="pt-1 text-[24px] leading-none font-semibold">Friends</h1>
           </div>
+          <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs text-white/85">
+            {user ? 1 : 0} friend
+          </span>
         </div>
-      </Link>
-      )}
-      
+
+        <div className="relative mb-4">
+          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-white/45">⌕</span>
+          <input
+            type="text"
+            placeholder="Search friends"
+            className="w-full rounded-2xl border border-white/15 bg-white/10 py-2.5 pl-9 pr-3 text-sm text-white placeholder:text-white/45 outline-none"
+            disabled
+          />
+        </div>
+
+        {user && (
+          <Link to={`/socials/${user.username}`} className="block">
+            <div className="relative overflow-hidden rounded-2xl border border-white/18 bg-white/12 p-3 shadow-[0_14px_36px_rgba(5,8,25,0.38)] transition hover:bg-white/16">
+              <div className="absolute right-3 top-3 rounded-full border border-white/15 bg-white/8 px-2 py-1 text-[10px] text-white/75">
+                {user.last_active_day ? `Last active ${user.last_active_day}` : 'No activity yet'}
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="h-13 w-13 overflow-hidden rounded-full border border-white/20 bg-[#596389]">
+                  <img
+                    src={user.profile_picture || 'https://placehold.co/96x96'}
+                    alt="avatar"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+
+                <div>
+                  <p className="text-xs font-medium text-white/70">Level {pet?.level || 1}</p>
+                  <p className="text-base font-semibold text-white">@{user.username}</p>
+                </div>
+              </div>
+            </div>
+          </Link>
+        )}
+      </div>
     </div>
   );
 }
