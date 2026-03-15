@@ -152,39 +152,105 @@ function PetCard({ pet }) {
 
 function CategoryItem({ category, onPress }) {
   const percent = category.budget > 0 ? Math.min((category.spent / category.budget) * 100, 100) : 0
+  const isOver = category.budget > 0 && category.spent > category.budget
 
   return (
     <button
       onClick={() => onPress(category)}
-      className="relative w-full h-18 rounded-sm bg-[#d3d3d5] px-4 flex justify-between items-center text-left overflow-hidden"
+      className="relative w-full rounded-2xl border border-white/15 bg-white/10 overflow-hidden text-left shadow-[0_8px_24px_rgba(5,8,25,0.22)] transition hover:bg-white/14 active:scale-[0.98]"
     >
+      {/* progress fill */}
       <div
-        className="absolute inset-y-0 left-0 bg-[#d9d39b]"
+        className={`absolute inset-y-0 left-0 transition-all duration-500 ${
+          isOver
+            ? 'bg-linear-to-r from-rose-500/40 to-red-400/30'
+            : 'bg-linear-to-r from-indigo-400/30 to-violet-400/20'
+        }`}
         style={{ width: `${percent}%` }}
       />
 
-      <div className="relative z-10">
-        <p className="text-black font-bold text-[34px] leading-none tracking-tight">{category.name}</p>
-        <p className="text-black text-sm pt-0.5">{formatMoney(category.spent)} out of {formatMoney(category.budget)}</p>
+      <div className="relative z-10 flex items-center justify-between px-4 py-3">
+        <div>
+          <p className="text-white font-semibold text-base leading-none">{toTitleCase(category.name)}</p>
+          <p className="text-white/60 text-xs pt-1.5">
+            {formatMoney(category.spent)}
+            <span className="text-white/40"> / {formatMoney(category.budget)}</span>
+          </p>
+        </div>
+        <div className="flex flex-col items-end gap-1.5">
+          <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${
+            isOver
+              ? 'bg-rose-400/15 text-rose-200 border-rose-300/25'
+              : percent >= 80
+              ? 'bg-amber-300/15 text-amber-100 border-amber-300/20'
+              : 'bg-emerald-400/15 text-emerald-100 border-emerald-300/20'
+          }`}>
+            {Math.round(percent)}%
+          </span>
+        </div>
       </div>
-      <span className="relative z-10 text-black text-2xl pr-1">···</span>
+
+      {/* thin progress bar at bottom */}
+      <div className="relative h-0.5 w-full bg-white/8">
+        <div
+          className={`absolute inset-y-0 left-0 transition-all duration-500 ${
+            isOver ? 'bg-rose-400' : 'bg-indigo-400'
+          }`}
+          style={{ width: `${percent}%` }}
+        />
+      </div>
     </button>
   )
 }
 
 function PayPeriodExpenditure({ totals, payPeriodLabel }) {
+  const overallPercent = totals.budget > 0 ? Math.min((totals.spent / totals.budget) * 100, 100) : 0
+  const isOver = totals.budget > 0 && totals.spent > totals.budget
+
   return (
     <div className="px-6 pb-4">
-      <div className="bg-[#3b3b85] border border-white/10 rounded-2xl px-4 py-3 text-white">
-        <div className="flex items-start justify-between gap-4">
+      <div className="relative overflow-hidden rounded-2xl border border-white/15 bg-white/10 px-4 py-4 text-white shadow-[0_8px_24px_rgba(5,8,25,0.22)]">
+        <div className="flex items-start justify-between gap-4 mb-3">
           <div>
-            <p className="text-[24px] leading-none font-semibold">Pay Period Expenditure</p>
-            <p className="text-xs text-white/85 pt-1">You’ve spent {formatMoney(totals.spent)} this {payPeriodLabel}.</p>
+            <p className="text-xs uppercase tracking-[0.18em] text-white/55">Pay Period</p>
+            <p className="pt-1 text-[20px] leading-none font-semibold">Expenditure</p>
           </div>
           <span className="text-2xl">🧾</span>
         </div>
-      </div>
 
+        <div className="flex items-end justify-between mb-2">
+          <p className="text-xs text-white/65">
+            {formatMoney(totals.spent)}
+            {totals.budget > 0 && <span className="text-white/40"> / {formatMoney(totals.budget)}</span>}
+          </p>
+          {totals.budget > 0 && (
+            <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${
+              isOver
+                ? 'bg-rose-400/15 text-rose-200 border-rose-300/25'
+                : 'bg-indigo-400/15 text-indigo-200 border-indigo-300/20'
+            }`}>
+              {Math.round(overallPercent)}% of budget
+            </span>
+          )}
+        </div>
+
+        {totals.budget > 0 && (
+          <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+            <div
+              className={`h-full transition-all duration-500 rounded-full ${
+                isOver
+                  ? 'bg-linear-to-r from-rose-400 to-red-400'
+                  : 'bg-linear-to-r from-indigo-400 to-violet-400'
+              }`}
+              style={{ width: `${overallPercent}%` }}
+            />
+          </div>
+        )}
+
+        <p className="text-xs text-white/55 pt-2">
+          You've spent {formatMoney(totals.spent)} this {payPeriodLabel}.
+        </p>
+      </div>
     </div>
   )
 }
@@ -279,16 +345,27 @@ export default function Home() {
 
   return (
     <div className="flex flex-col gap-2 pb-3">
-      {errorMessage && <p className="text-xs text-red-300 px-6">{errorMessage}</p>}
-      {isLoading && <p className="text-xs text-white px-6">Loading your dashboard...</p>}
+      {errorMessage && (
+        <div className="mx-6 rounded-xl border border-red-300/30 bg-red-500/10 px-3 py-2">
+          <p className="text-xs text-red-200">{errorMessage}</p>
+        </div>
+      )}
+      {isLoading && (
+        <div className="mx-6 rounded-xl border border-white/10 bg-white/6 px-3 py-2">
+          <p className="text-xs text-white/60">Loading your dashboard…</p>
+        </div>
+      )}
 
       <PetCard pet={data.pet} />
 
       <div className="px-6 mt-4">
         <div className="flex justify-between items-center mb-3">
-          <h2 className="text-white text-[20px] leading-none font-semibold">Weekly Expenditure</h2>
+          <div>
+            <p className="text-xs uppercase tracking-[0.18em] text-white/55">Tracking</p>
+            <h2 className="pt-1 text-[20px] leading-none font-semibold text-white">Weekly Expenditure</h2>
+          </div>
           <button
-            className="text-white text-4xl leading-none -mt-1 hover:scale-110 transition-transform"
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white text-xl leading-none hover:bg-white/18 transition-colors"
             onClick={handleAddCategory}
             aria-label="Add category"
           >
@@ -296,7 +373,7 @@ export default function Home() {
           </button>
         </div>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2.5">
           {data.categories.map(cat => (
             <CategoryItem
               key={cat.id}
@@ -306,14 +383,17 @@ export default function Home() {
           ))}
 
           {!isLoading && data.categories.length === 0 && (
-            <div className="bg-[#3a3a7e] rounded-xl px-4 py-4 text-white text-sm">
-              No categories yet. Create your spending categories to start daily tracking.
+            <div className="rounded-2xl border border-white/12 bg-white/8 px-4 py-5 text-center">
+              <p className="text-sm text-white/65">No categories yet.</p>
+              <p className="text-xs text-white/40 pt-1">Tap <span className="text-white/60">+</span> to add spending categories.</p>
             </div>
           )}
         </div>
       </div>
 
-      <PayPeriodExpenditure totals={totals} payPeriodLabel={payPeriodLabel} />
+      <div className="mt-4">
+        <PayPeriodExpenditure totals={totals} payPeriodLabel={payPeriodLabel} />
+      </div>
     </div>
   )
 }
