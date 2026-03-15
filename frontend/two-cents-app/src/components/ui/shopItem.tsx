@@ -7,6 +7,7 @@ type ShopItemProps = {
     src: string;
     desc: string;
     price: number;
+    colour: string;
   }
 };
 export default function ShopItem({ item } : ShopItemProps) {
