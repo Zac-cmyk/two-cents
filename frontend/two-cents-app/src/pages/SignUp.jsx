@@ -7,20 +7,51 @@ import { Button } from "@/components/ui/button"
 import { useState } from "react";
 import { signInWithGoogle } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { authApi, getApiErrorMessage } from "@/api";
 
 export default function SignUp() {
 
   const [ username, setUsername ] = useState("");
   const [ moveOn, setMoveOn ] = useState(false);
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [errorMessage, setErrorMessage] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const navigate = useNavigate();
 
   const movingOn = () => {
     // todo: validate username
-    if (username == "") {
+    if (username.trim() === "") {
+      setErrorMessage('Username is required')
       return false;
     }
+    setErrorMessage("")
     setMoveOn(true)
+  }
+
+  const handleRegister = async () => {
+    if (!email.trim() || !password.trim() || !username.trim()) {
+      setErrorMessage('Username, email and password are required')
+      return
+    }
+
+    setIsSubmitting(true)
+    setErrorMessage("")
+
+    try {
+      await authApi.register({
+        email: email.trim(),
+        username: username.trim(),
+        name: username.trim(),
+        password,
+      })
+      navigate('/')
+    } catch (error) {
+      setErrorMessage(getApiErrorMessage(error, 'Registration failed'))
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const googleLogin = async () => {
@@ -38,6 +69,8 @@ export default function SignUp() {
 
       <h1 className="text-2xl font-bold">create an account!</h1>
 
+      {errorMessage && <p className="text-xs text-red-300">{errorMessage}</p>}
+
     { moveOn ?
      <>
      <div className="flex flex-col gap-6">
@@ -47,6 +80,8 @@ export default function SignUp() {
            id="input-field-email"
            type="text"
            placeholder="Enter your email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
          />
        </Field>
 
@@ -55,14 +90,22 @@ export default function SignUp() {
          <FieldLabel htmlFor="input-field-password">Password</FieldLabel>
          <Input
            id="input-field-password"
-           type="text"
+           type="password"
            placeholder="Password"
+           value={password}
+           onChange={(event) => setPassword(event.target.value)}
          />
        </Field>
      </div>
 
        <div className="w-full flex flex-col items-center justify-center gap-4">
-         <Button className="w-full bg-black/50 text-white shadow hover:cursor-pointer">Sign Up</Button>
+         <Button
+          className="w-full bg-black/50 text-white shadow hover:cursor-pointer"
+          onClick={handleRegister}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? 'Creating account...' : 'Sign Up'}
+        </Button>
          <p>or</p>
          <Button className="w-full bg-none outline bg-black/50 shadow hover:cursor-pointer" onClick={googleLogin}>
          <img src={GoogleIcon} alt="Google logo" className="w-4 h-4" />
@@ -83,6 +126,7 @@ export default function SignUp() {
           type="text"
           placeholder="Enter your username"
           onChange={(e) => setUsername(e.target.value)}
+          value={username}
         />
         <FieldDescription>Username must be unique!</FieldDescription>
         <div className="w-full flex justify-end">
