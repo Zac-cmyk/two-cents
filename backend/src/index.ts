@@ -36,6 +36,9 @@ app.use('/api/auth', authRouter);
 import { shopRouter } from './routes/shop.routes';
 app.use('/api/shops', shopRouter);
 
+import { petRouter } from './routes/pet.routes';
+app.use('/api/pets', petRouter);
+
 // Start server
 const startServer = (port: number): Server => {
   const server = app.listen(port, () => {
