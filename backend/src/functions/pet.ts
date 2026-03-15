@@ -3,6 +3,7 @@ import { execute, queryOne } from '../utils';
 export interface PetRecord {
 	pet_id: string;
 	user_id: string;
+	name: string | null;
 	health: number;
 	hearts: number;
 	state: string | null;
@@ -13,6 +14,7 @@ export interface PetRecord {
 
 export interface CreatePetInput {
 	user_id: string;
+	name?: string | null;
 	health?: number;
 	hearts?: number;
 	state?: string | null;
@@ -22,6 +24,7 @@ export interface CreatePetInput {
 }
 
 export interface UpdatePetInput {
+	name?: string | null;
 	health?: number;
 	hearts?: number;
 	state?: string | null;
@@ -31,15 +34,16 @@ export interface UpdatePetInput {
 }
 
 const petSelectFields =
-	'pet_id, user_id, health, hearts, state, experience, inactivity, equipped_items';
+	'pet_id, user_id, name, health, hearts, state, experience, inactivity, equipped_items';
 
 export const createPetForUser = async (input: CreatePetInput): Promise<PetRecord> => {
 	const row = await queryOne<PetRecord>(
-		`INSERT INTO pet (user_id, health, hearts, state, experience, inactivity, equipped_items)
-		 VALUES ($1, $2, $3, $4, $5, $6, $7::jsonb)
+		`INSERT INTO pet (user_id, name, health, hearts, state, experience, inactivity, equipped_items)
+		 VALUES ($1, $2, $3, $4, $5, $6, $7, $8::jsonb)
 		 RETURNING ${petSelectFields}`,
 		[
 			input.user_id,
+			input.name ?? 'Pet',
 			input.health ?? 100,
 			input.hearts ?? 3,
 			input.state ?? null,
@@ -66,16 +70,18 @@ export const updatePetByUserId = async (
 ): Promise<PetRecord | null> => {
 	return queryOne<PetRecord>(
 		`UPDATE pet
-		 SET health = COALESCE($2, health),
-		     hearts = COALESCE($3, hearts),
-		     state = COALESCE($4, state),
-		     experience = COALESCE($5, experience),
-		     inactivity = COALESCE($6, inactivity),
-		     equipped_items = COALESCE($7::jsonb, equipped_items)
+		 SET name = COALESCE($2, name),
+		     health = COALESCE($3, health),
+		     hearts = COALESCE($4, hearts),
+		     state = COALESCE($5, state),
+		     experience = COALESCE($6, experience),
+		     inactivity = COALESCE($7, inactivity),
+		     equipped_items = COALESCE($8::jsonb, equipped_items)
 		 WHERE user_id = $1
 		 RETURNING ${petSelectFields}`,
 		[
 			userId,
+			input.name ?? null,
 			input.health ?? null,
 			input.hearts ?? null,
 			input.state ?? null,

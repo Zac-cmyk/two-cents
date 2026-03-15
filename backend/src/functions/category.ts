@@ -1,4 +1,8 @@
 import { execute, query, queryOne } from '../utils';
+import { getUserById } from './users';
+
+const roundMoney = (value: number): number => Math.round(value * 100) / 100;
+
 
 export interface CategoryRecord {
 	category_id: string;
@@ -37,6 +41,21 @@ const categorySelectFields =
 	'category_id, user_id, name, percentage, upper_limit, expenditure, daily_expenses';
 
 export const createCategory = async (input: CreateCategoryInput): Promise<CategoryRecord> => {
+	let upperLimit = input.upper_limit;
+	let dailyExpenses = input.daily_expenses ?? 0;
+
+	if (input.percentage && !input.upper_limit) {
+		const user = await getUserById(input.user_id);
+		if (user && user.income && user.pay_period) {
+			const income = Number(user.income);
+			const payPeriod = Number(user.pay_period);
+			if (income > 0 && payPeriod > 0) {
+				upperLimit = roundMoney((income * input.percentage) / 100);
+				dailyExpenses = roundMoney((upperLimit || 0) / payPeriod);
+			}
+		}
+	}
+
 	const row = await queryOne<CategoryRecord>(
 		`INSERT INTO category (user_id, name, percentage, upper_limit, expenditure, daily_expenses)
 		 VALUES ($1, $2, $3, $4, $5, $6)
@@ -45,9 +64,9 @@ export const createCategory = async (input: CreateCategoryInput): Promise<Catego
 			input.user_id,
 			input.name,
 			input.percentage ?? null,
-			input.upper_limit ?? null,
+			upperLimit ?? null,
 			input.expenditure ?? 0,
-			input.daily_expenses ?? 0,
+			dailyExpenses,
 		]
 	);
 

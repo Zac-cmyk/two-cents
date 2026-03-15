@@ -1,11 +1,37 @@
 import { Link } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { authApi, getApiErrorMessage, petApi } from '@/api'
 
 function FriendStats() {
   const { username } = useParams()
+  const [user, setUser] = useState(null)
+  const [pet, setPet] = useState(null)
+  const [errorMessage, setErrorMessage] = useState('')
+
+  useEffect(() => {
+    const loadFriendStats = async () => {
+      setErrorMessage('')
+
+      try {
+        const [authState, petProgress] = await Promise.all([
+          authApi.me(),
+          petApi.getProgress().catch(() => null),
+        ])
+        setUser(authState?.user || null)
+        setPet(petProgress)
+      } catch (error) {
+        setErrorMessage(getApiErrorMessage(error, 'Failed to load friend stats'))
+      }
+    }
+
+    loadFriendStats()
+  }, [])
 
   return (
     <div className="bg-[#1e2a4a] min-h-screen p-6 flex flex-col items-center">
+
+      {errorMessage && <p className="text-xs text-red-300 self-start pb-2">{errorMessage}</p>}
 
       {/* Back button */}
       <Link to="/socials" className="self-start text-gray-400 hover:text-white flex items-center gap-1 text-sm">
@@ -14,12 +40,12 @@ function FriendStats() {
 
       {/* Avatar */}
         <div className="bg-[#e8f0f0] rounded-full w-24 h-24 flex items-center justify-center overflow-hidden mb-4">
-          <img src="https://placehold.co/60" alt="avatar" className="w-16 h-16 object-contain" />
+          <img src={user?.profile_picture || 'https://placehold.co/60'} alt="avatar" className="w-16 h-16 object-contain" />
         </div>
 
       {/* Name */}
-      <p className="text-white font-bold text-xl">Lv. 12</p>
-      <p className="text-gray-300 text-lg mb-6">{username}</p>
+      <p className="text-white font-bold text-xl">Lv. {pet?.level || 1}</p>
+      <p className="text-gray-300 text-lg mb-6">{user?.username || username}</p>
 
       {/* Pet scene */}
       <div className="w-full rounded-2xl overflow-hidden relative">

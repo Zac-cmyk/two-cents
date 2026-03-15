@@ -1,0 +1,7 @@
+export { apiClient, getApiErrorMessage } from './client'
+export { authApi } from './wrappers/authApi'
+export { userApi } from './wrappers/userApi'
+export { petApi } from './wrappers/petApi'
+export { categoryApi } from './wrappers/categoryApi'
+export { shopApi } from './wrappers/shopApi'
+export { healthApi } from './wrappers/healthApi'

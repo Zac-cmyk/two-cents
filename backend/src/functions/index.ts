@@ -22,6 +22,13 @@ export {
 export type { CreatePetInput, PetRecord, UpdatePetInput } from './pet';
 
 export {
+	addFriend,
+	getFriendsByUserId,
+	removeFriend,
+} from './friend';
+export type { FriendRecord } from './friend';
+
+export {
 	createCategory,
 	deleteCategory,
 	getCategoriesByUserId,

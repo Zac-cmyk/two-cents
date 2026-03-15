@@ -1,16 +1,15 @@
 {
+  "version": 2,
   "builds": [
     {
-      "src": "frontend/two-cents-app/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist",
-        "installCommand": "npm install --legacy-peer-deps",
-        "buildCommand": "npm run build"
-      }
+      "src": "backend/src/index.ts",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
-    { "src": "/(.*)", "dest": "/frontend/two-cents-app/dist/$1" }
+    {
+      "src": "/(.*)",
+      "dest": "backend/src/index.ts"
+    }
   ]
 }

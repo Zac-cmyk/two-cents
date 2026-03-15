@@ -61,17 +61,19 @@ petRouter.post('/me', requireSession, async (req: Request, res: Response) => {
 			return;
 		}
 
-		const { health, hearts, state, experience, inactivity, equipped_items } = req.body as {
-			health?: number;
-			hearts?: number;
-			state?: string | null;
-			experience?: number;
-			inactivity?: number;
-			equipped_items?: string[];
-		};
+const { name, health, hearts, state, experience, inactivity, equipped_items } = req.body as {
+		name?: string | null;
+		health?: number;
+		hearts?: number;
+		state?: string | null;
+		experience?: number;
+		inactivity?: number;
+		equipped_items?: string[];
+	};
 
 		const pet = await createPetForUser({
 			user_id: userId,
+			name,
 			health,
 			hearts,
 			state,
@@ -95,16 +97,18 @@ petRouter.put('/me', requireSession, async (req: Request, res: Response) => {
 			return;
 		}
 
-		const { health, hearts, state, experience, inactivity, equipped_items } = req.body as {
-			health?: number;
-			hearts?: number;
-			state?: string | null;
-			experience?: number;
-			inactivity?: number;
-			equipped_items?: string[];
-		};
+const { name, health, hearts, state, experience, inactivity, equipped_items } = req.body as {
+		name?: string | null;
+		health?: number;
+		hearts?: number;
+		state?: string | null;
+		experience?: number;
+		inactivity?: number;
+		equipped_items?: string[];
+	};
 
 		const updated = await updatePetByUserId(userId, {
+			name,
 			health,
 			hearts,
 			state,

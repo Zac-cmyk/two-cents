@@ -6,14 +6,42 @@ import GoogleIcon from "@/assets/google.svg"
 import { Button } from "@/components/ui/button"
 import { signInWithGoogle } from "../hooks/useAuth"
 import { useNavigate } from "react-router-dom"
+import { useState } from "react"
+import { authApi, getApiErrorMessage } from "@/api"
 
 export default function Login() {
+  const [identifier, setIdentifier] = useState("")
+  const [password, setPassword] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [errorMessage, setErrorMessage] = useState("")
 
   const navigate = useNavigate();
 
   const googleLogin = async () => {
     await signInWithGoogle();
     navigate("/");
+  }
+
+  const handleLogin = async () => {
+    if (!identifier.trim() || !password.trim()) {
+      setErrorMessage('Please enter both username/email and password')
+      return
+    }
+
+    setIsSubmitting(true)
+    setErrorMessage("")
+
+    try {
+      await authApi.login({
+        identifier: identifier.trim(),
+        password,
+      })
+      navigate("/")
+    } catch (error) {
+      setErrorMessage(getApiErrorMessage(error, 'Login failed'))
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -28,11 +56,13 @@ export default function Login() {
 
     <div className="flex flex-col gap-6">
       <Field>
-        <FieldLabel htmlFor="input-field-email">Email</FieldLabel>
+        <FieldLabel htmlFor="input-field-email">Email or Username</FieldLabel>
         <Input
           id="input-field-email"
           type="text"
-          placeholder="Enter your email"
+          placeholder="Enter your email or username"
+          value={identifier}
+          onChange={(event) => setIdentifier(event.target.value)}
         />
       </Field>
 
@@ -40,14 +70,24 @@ export default function Login() {
         <FieldLabel htmlFor="input-field-username">Password</FieldLabel>
         <Input
           id="input-field-password"
-          type="text"
+          type="password"
           placeholder="Password"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
         />
       </Field>
     </div>
 
+      {errorMessage && <p className="text-xs text-red-300 text-center">{errorMessage}</p>}
+
       <div className="w-full flex flex-col items-center justify-center gap-4">
-        <Button className="w-full bg-black/50 text-white shadow hover:cursor-pointer">Log into Account</Button>
+        <Button
+          className="w-full bg-black/50 text-white shadow hover:cursor-pointer"
+          onClick={handleLogin}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? 'Logging in...' : 'Log into Account'}
+        </Button>
         <p>or</p>
         <Button className="w-full bg-none outline bg-black/50 shadow hover:cursor-pointer" onClick={googleLogin}>
         <img src={GoogleIcon} alt="Google logo" className="w-4 h-4" />

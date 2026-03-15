@@ -44,6 +44,9 @@ app.use('/api/shops', shopRouter);
 import { petRouter } from './routes/pet.routes';
 app.use('/api/pets', petRouter);
 
+import { friendRouter } from './routes/friend.routes';
+app.use('/api/friends', friendRouter);
+
 // Start server
 const startServer = (port: number): Server => {
   const server = app.listen(port, () => {
@@ -65,7 +68,9 @@ const startServer = (port: number): Server => {
   return server;
 };
 
-startServer(initialPort);
+if (process.env.VERCEL !== '1') {
+  startServer(initialPort);
+}
 
 verifyDatabaseConnection().catch((error) => {
   console.error('[database]: PostgreSQL connection failed', error);
