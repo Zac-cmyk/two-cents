@@ -65,7 +65,9 @@ const startServer = (port: number): Server => {
   return server;
 };
 
-startServer(initialPort);
+if (process.env.VERCEL !== '1') {
+  startServer(initialPort);
+}
 
 verifyDatabaseConnection().catch((error) => {
   console.error('[database]: PostgreSQL connection failed', error);
