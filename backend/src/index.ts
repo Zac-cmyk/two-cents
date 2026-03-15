@@ -1,5 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
+import { getUserById, updateUser, UserRecord } from './functions/users';
+import { Request, Response } from 'express';
 
 import express, { Express } from 'express';
 import cors from 'cors';
@@ -26,6 +28,9 @@ app.get('/', (req, res) => {
 // Routes
 import { healthRouter } from './routes/health.routes';
 app.use('/api/health', healthRouter);
+
+import { userRouter } from './routes/user.routes'; 
+app.use('/api/users', userRouter);
 
 import { categoryRouter } from './routes/category.routes';
 app.use('/api/category', categoryRouter);
