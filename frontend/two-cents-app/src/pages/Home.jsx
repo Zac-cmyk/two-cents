@@ -113,16 +113,15 @@ function PetCard({ pet }) {
             </span>
           </div>
 
-          <div className="absolute inset-x-0 bottom-0 top-0 flex items-center justify-center">
-            <div className="relative h-24 w-24 rounded-3xl border border-dashed border-white/25 bg-white/10">
-              <div className="absolute left-1/2 bottom-[-1.6rem] -translate-x-1/2 whitespace-nowrap text-[9px] uppercase tracking-[0.22em] text-white/55">
-                Pet Sprite Placeholder
+          <div className="absolute inset-x-0 bottom-0 top-0 mt-10 flex items-center justify-center">
+            <div className="relative h-24 w-24 rounded-3xl">
+            <div className="absolute left-1/2 bottom-[-1.6rem] -translate-x-1/2 w-40 h-40 flex items-center justify-center">
+                <img className="w-50 absolute" src={bowtie}></img>
+                <img className="w-50" src={happyCat}></img>
+                {/* TODO: toggle on and off if bowtie is purchased */}
               </div>
             </div>
           </div>
-            <img className="w-50" src={happyCat}></img>
-            {/* TODO: toggle on and off if bowtie is purchased */}
-            <img className="w-50 absolute" src={bowtie}></img>
         </div>
       </div>
 
