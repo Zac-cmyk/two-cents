@@ -98,7 +98,9 @@ function PetCard({ pet }) {
   return (
     <div className="px-6 pt-1 space-y-3">
       <div className="rounded-4xl overflow-hidden shadow-[0_14px_28px_rgba(0,0,0,0.2)] p-3">
-        <div className="relative mx-auto overflow-hidden rounded-3xl border border-white/10 bg-linear-to-b from-[#5B63CF] to-[#4952BE]" style={{ width: '336px', height: '192px' }}>
+
+        <div className="relative mx-auto overflow-hidden rounded-3xl " style={{ width: '336px', height: '192px' }}>
+          <img src="./src/assets/beach.gif" />
           <div className="absolute left-4 top-4 space-y-2.5">
             <div className="pb-0.5">
               <Hearts count={pet.hearts} max={pet.maxHearts} />
