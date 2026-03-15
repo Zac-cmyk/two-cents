@@ -262,6 +262,12 @@ export default function Home() {
   const [userId, setUserId] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   const [isLoading, setIsLoading] = useState(true)
+  const [income, setIncome] = useState(0)
+  const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false)
+  const [newCategoryName, setNewCategoryName] = useState('')
+  const [newCategoryPercent, setNewCategoryPercent] = useState('')
+  const [modalError, setModalError] = useState('')
+  const [isCreatingCategory, setIsCreatingCategory] = useState(false)
 
   const loadDashboard = async () => {
     setIsLoading(true)
@@ -302,6 +308,7 @@ export default function Home() {
       })
       setTotals({ spent: totalSpent, budget: totalBudget })
       setUserId(user?.user_id || '')
+      setIncome(Number(user?.income ?? 0))
       setPayPeriodLabel((user?.pay_period || 'pay period').toString().replaceAll('_', ' '))
     } catch (error) {
       setErrorMessage(getApiErrorMessage(error, 'Failed to load dashboard data'))
@@ -314,37 +321,78 @@ export default function Home() {
     loadDashboard()
   }, [])
 
-  const handleAddCategory = async () => {
-    if (!userId) {
-      setErrorMessage('Please login again before adding categories.')
+  useEffect(() => {
+    const scrollContainer = document.querySelector('main')
+    if (!scrollContainer) return
+
+    const previousOverflow = scrollContainer.style.overflowY
+
+    if (isAddCategoryOpen) {
+      scrollContainer.style.overflowY = 'hidden'
+    }
+
+    return () => {
+      scrollContainer.style.overflowY = previousOverflow
+    }
+  }, [isAddCategoryOpen])
+
+  const handleAddCategory = () => {
+    setErrorMessage('')
+    setModalError('')
+    setNewCategoryName('')
+    setNewCategoryPercent('')
+    setIsAddCategoryOpen(true)
+  }
+
+  const handleSubmitCategory = async () => {
+    const name = newCategoryName.trim()
+    const percentage = Number(newCategoryPercent)
+
+    if (!name) {
+      setModalError('Category name is required.')
       return
     }
 
-    const name = window.prompt('New category name (e.g. shopping):')
-    if (!name || !name.trim()) {
+    if (!Number.isFinite(percentage) || percentage <= 0 || percentage > 100) {
+      setModalError('Percentage must be between 0 and 100.')
       return
     }
 
-    const upperLimitInput = window.prompt('Optional weekly budget for this category (e.g. 150):', '0')
-    const upperLimit = Number(upperLimitInput)
+    const budgetBase = income > 0 ? income : totals.budget
+    if (!Number.isFinite(budgetBase) || budgetBase <= 0) {
+      setModalError('Set your income first so we can calculate a category budget.')
+      return
+    }
+
+    const upperLimit = (budgetBase * percentage) / 100
 
     try {
+      setIsCreatingCategory(true)
+      setModalError('')
       setErrorMessage('')
       await categoryApi.create({
-        user_id: userId,
-        name: name.trim(),
-        upper_limit: Number.isFinite(upperLimit) ? upperLimit : 0,
+        name,
+        upper_limit: upperLimit,
         expenditure: 0,
         daily_expenses: 0,
       })
+      setIsAddCategoryOpen(false)
       await loadDashboard()
     } catch (error) {
-      setErrorMessage(getApiErrorMessage(error, 'Failed to create category'))
+      setModalError(getApiErrorMessage(error, 'Failed to create category'))
+    } finally {
+      setIsCreatingCategory(false)
     }
   }
 
+  const budgetBase = income > 0 ? income : totals.budget
+  const percentNumber = Number(newCategoryPercent)
+  const calculatedBudget = Number.isFinite(percentNumber) && percentNumber > 0 && budgetBase > 0
+    ? (budgetBase * percentNumber) / 100
+    : 0
+
   return (
-    <div className="flex flex-col gap-2 pb-3">
+    <div className="relative min-h-full flex flex-col gap-2 pb-3">
       {errorMessage && (
         <div className="mx-6 rounded-xl border border-red-300/30 bg-red-500/10 px-3 py-2">
           <p className="text-xs text-red-200">{errorMessage}</p>
@@ -365,11 +413,13 @@ export default function Home() {
             <h2 className="pt-1 text-[20px] leading-none font-semibold text-white">Weekly Expenditure</h2>
           </div>
           <button
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white text-xl leading-none hover:bg-white/18 transition-colors"
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/18 transition-colors"
             onClick={handleAddCategory}
             aria-label="Add category"
           >
-            +
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 1V13M1 7H13" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
           </button>
         </div>
 
@@ -394,6 +444,73 @@ export default function Home() {
       <div className="mt-4">
         <PayPeriodExpenditure totals={totals} payPeriodLabel={payPeriodLabel} />
       </div>
+
+      {isAddCategoryOpen && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-[#0b0e2a]/60 px-5 py-6 backdrop-blur-[1px]">
+          <div className="w-full max-w-88 rounded-3xl border border-white/18 bg-linear-to-b from-[#323067]/95 to-[#25234f]/95 p-5 text-white shadow-[0_22px_50px_rgba(6,8,30,0.55)]">
+            <div className="mb-4">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-white/60">New Category</p>
+              <h3 className="pt-1 text-[24px] leading-none font-semibold">Add Budget Bucket</h3>
+            </div>
+
+            {modalError && (
+              <p className="mb-3 rounded-xl border border-red-300/30 bg-red-500/10 px-3 py-2 text-xs text-red-200">
+                {modalError}
+              </p>
+            )}
+
+            <div className="space-y-3">
+              <div>
+                <label className="mb-1 block text-[11px] uppercase tracking-[0.14em] text-white/65">Category name</label>
+                <input
+                  value={newCategoryName}
+                  onChange={(event) => setNewCategoryName(event.target.value)}
+                  placeholder="e.g. Groceries"
+                  className="w-full rounded-xl border border-white/15 bg-white/10 px-3 py-2.5 text-sm text-white outline-none placeholder:text-white/40 focus:border-indigo-300/60"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-[11px] uppercase tracking-[0.14em] text-white/65">Percentage</label>
+                <div className="flex items-center rounded-xl border border-white/15 bg-white/10 px-3 py-2.5">
+                  <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    value={newCategoryPercent}
+                    onChange={(event) => setNewCategoryPercent(event.target.value)}
+                    placeholder="e.g. 15"
+                    className="w-full bg-transparent text-sm text-white outline-none placeholder:text-white/40"
+                  />
+                  <span className="text-sm text-white/65">%</span>
+                </div>
+                <p className="pt-1 text-[11px] text-white/55">
+                  Budget preview: <span className="text-white/85">{formatMoney(calculatedBudget)}</span>
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-5 flex items-center gap-2">
+              <button
+                type="button"
+                className="flex-1 rounded-xl border border-white/18 bg-white/8 py-2.5 text-sm font-medium text-white/85 transition-colors hover:bg-white/12"
+                onClick={() => setIsAddCategoryOpen(false)}
+                disabled={isCreatingCategory}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="flex-1 rounded-xl bg-[#5B4FCF] py-2.5 text-sm font-semibold text-white shadow-[0_10px_22px_rgba(66,50,170,0.45)] transition-opacity disabled:opacity-50"
+                onClick={handleSubmitCategory}
+                disabled={isCreatingCategory}
+              >
+                {isCreatingCategory ? 'Adding...' : 'Add Category'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

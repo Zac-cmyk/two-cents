@@ -26,13 +26,16 @@ export const categoryRouter = Router();
 categoryRouter.post('/', requireSession, async (req: Request, res: Response) => {
   try {
     const userId = req.authUser!.user_id;
-    const input : CreateCategoryInput = req.body;
+    const input = req.body as Omit<CreateCategoryInput, 'user_id'> & { user_id?: string };
 
-    if (!input.user_id || !input.name) {
-      return res.status(400).json({error : 'user id and name required'});
+    if (!input.name) {
+      return res.status(400).json({ error: 'name required' });
     }
 
-    const category = await createCategory(input);
+    const category = await createCategory({
+      ...input,
+      user_id: userId,
+    });
     return res.status(201).json(category);
   } catch (error) {
     console.error('Error creating category', error);

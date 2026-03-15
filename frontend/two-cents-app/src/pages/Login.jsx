@@ -19,8 +19,18 @@ export default function Login() {
   const navigate = useNavigate();
 
   const googleLogin = async () => {
-    await signInWithGoogle();
-    navigate("/home");
+    setErrorMessage('')
+    setIsSubmitting(true)
+
+    try {
+      const { idToken } = await signInWithGoogle();
+      await authApi.googleLogin({ idToken })
+      navigate('/home')
+    } catch (error) {
+      setErrorMessage(getApiErrorMessage(error, 'Google login failed'))
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleLogin = async () => {
