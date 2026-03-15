@@ -14,12 +14,19 @@ export const authRouter = Router();
 
 const sessionTtlDays = Number(process.env.SESSION_TTL_DAYS || 7);
 const sessionTtlMs = sessionTtlDays * 24 * 60 * 60 * 1000;
+const isProduction = process.env.NODE_ENV === 'production';
+const sessionCookieSameSite =
+	(process.env.SESSION_COOKIE_SAMESITE as 'lax' | 'strict' | 'none' | undefined) ||
+	(isProduction ? 'none' : 'lax');
+const sessionCookieSecure = process.env.SESSION_COOKIE_SECURE
+	? process.env.SESSION_COOKIE_SECURE === 'true'
+	: isProduction || sessionCookieSameSite === 'none';
 
 const setSessionCookie = (res: Response, token: string): void => {
 	res.cookie(sessionCookieName, token, {
 		httpOnly: true,
-		secure: process.env.NODE_ENV === 'production',
-		sameSite: 'lax',
+		secure: sessionCookieSecure,
+		sameSite: sessionCookieSameSite,
 		maxAge: sessionTtlMs,
 		path: '/',
 	});
@@ -28,8 +35,8 @@ const setSessionCookie = (res: Response, token: string): void => {
 const clearSessionCookie = (res: Response): void => {
 	res.clearCookie(sessionCookieName, {
 		httpOnly: true,
-		secure: process.env.NODE_ENV === 'production',
-		sameSite: 'lax',
+		secure: sessionCookieSecure,
+		sameSite: sessionCookieSameSite,
 		path: '/',
 	});
 };
