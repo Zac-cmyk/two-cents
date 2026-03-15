@@ -13,7 +13,6 @@ function Shop() {
     { name: "bowtie", src: bowtie, desc: "a shiny pretty bow! comes with a bell.", price: 7.00, colour: "drop-shadow-[0_4px_6px_rgba(255,0,0,0.5)]" },
     { name: "squeaky mouse", src: squeakyMouse, desc: "a plush mouse with a wiggly tail!", price: 12.50, colour: "drop-shadow-[0_4px_6px_rgba(255,255,255,0.5)]" },
     { name: "ball of yarn", src: example, desc: "string that unrolls until there’s no more ball left.", price: 3.00, colour: "drop-shadow-[0_4px_6px_rgba(255,0,0,0.5)]" }
-
   ]
 
   return (
