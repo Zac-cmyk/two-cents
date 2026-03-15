@@ -4,12 +4,14 @@ export {
 	addUserPoints,
 	createUser,
 	deleteUser,
+	getUserAuthByEmailOrUsername,
 	getUserByEmail,
 	getUserById,
+	getUserByUsername,
 	getUsers,
 	updateUser,
 } from './users';
-export type { CreateUserInput, UpdateUserInput, UserRecord } from './users';
+export type { CreateUserInput, UpdateUserInput, UserAuthRecord, UserRecord } from './users';
 
 export {
 	createPetForUser,
@@ -54,3 +56,6 @@ export type {
 
 export { getUserBudgetSummary, getUserProfileBundle } from './dashboard';
 export type { UserBudgetSummary, UserProfileBundle } from './dashboard';
+
+export { createSession, getSessionByToken, revokeAllSessionsForUser, revokeSessionByToken } from './session';
+export type { SessionLookupResult, SessionUser } from './session';

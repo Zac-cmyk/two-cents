@@ -31,6 +31,16 @@ app.use('/api/health', healthRouter);
 
 import { userRouter } from './routes/user.routes'; 
 app.use('/api/users', userRouter);
+
+import { categoryRouter } from './routes/category.routes';
+app.use('/api/category', categoryRouter);
+
+import { authRouter } from './routes/auth.routes';
+app.use('/api/auth', authRouter);
+
+import { shopRouter } from './routes/shop.routes';
+app.use('/api/shops', shopRouter);
+
 // Start server
 const startServer = (port: number): Server => {
   const server = app.listen(port, () => {
@@ -57,6 +67,5 @@ startServer(initialPort);
 verifyDatabaseConnection().catch((error) => {
   console.error('[database]: PostgreSQL connection failed', error);
 });
-
 
 export default app;

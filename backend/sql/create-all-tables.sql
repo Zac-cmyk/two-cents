@@ -3,12 +3,34 @@ CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 CREATE TABLE users (
     user_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email TEXT NOT NULL UNIQUE,
+    username TEXT NOT NULL UNIQUE,
     name TEXT NOT NULL,
+    password TEXT NOT NULL,
+    profile_picture TEXT,
     points INTEGER DEFAULT 0,
     income NUMERIC(10,2),
     pay_period INTEGER,
     last_active_day TEXT
 );
+
+CREATE TABLE user_session (
+    session_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL,
+    token_hash TEXT NOT NULL UNIQUE,
+    expires_at TIMESTAMPTZ NOT NULL,
+    revoked_at TIMESTAMPTZ,
+    user_agent TEXT,
+    ip_address TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+    CONSTRAINT fk_session_user
+        FOREIGN KEY (user_id)
+        REFERENCES users(user_id)
+        ON DELETE CASCADE
+);
+
+CREATE INDEX idx_user_session_user_id ON user_session(user_id);
+CREATE INDEX idx_user_session_expires_at ON user_session(expires_at);
 
 CREATE TABLE pet (
     pet_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -18,6 +40,7 @@ CREATE TABLE pet (
     state TEXT,
     experience INTEGER DEFAULT 0,
     inactivity INTEGER DEFAULT 0,
+    equipped_items JSONB NOT NULL DEFAULT '[]'::jsonb,
 
     CONSTRAINT fk_pet_user
         FOREIGN KEY (user_id)
