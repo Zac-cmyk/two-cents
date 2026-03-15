@@ -1,6 +1,9 @@
 import { execute, query, queryOne } from '../utils';
 import { getUserById } from './users';
 
+const roundMoney = (value: number): number => Math.round(value * 100) / 100;
+
+
 export interface CategoryRecord {
 	category_id: string;
 	user_id: string;
@@ -47,8 +50,8 @@ export const createCategory = async (input: CreateCategoryInput): Promise<Catego
 			const income = Number(user.income);
 			const payPeriod = Number(user.pay_period);
 			if (income > 0 && payPeriod > 0) {
-				upperLimit = income * input.percentage / 100;
-				dailyExpenses = upperLimit / payPeriod;
+				upperLimit = roundMoney((income * input.percentage) / 100);
+				dailyExpenses = roundMoney((upperLimit || 0) / payPeriod);
 			}
 		}
 	}

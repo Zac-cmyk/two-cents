@@ -13,13 +13,13 @@ VALUES
 	('a9c4e730-2d8b-4f95-9e21-c7d4b6a1f555', 'evan@example.com', 'evanw', 'Evan Williams', 'Password123!', 'https://i.pravatar.cc/150?img=5', 300, 48000.00, 30, '2026-03-12');
 
 -- 2) Pet (1 per user)
-INSERT INTO pet (pet_id, user_id, health, hearts, state, experience, inactivity, equipped_items)
+INSERT INTO pet (pet_id, user_id, name, health, hearts, state, experience, inactivity, equipped_items)
 VALUES
-	('14b2c7d9-8f31-4a6e-9a8b-1d2f3c4b5e61', 'c1a5f8d2-3b44-4d17-9c9b-2f6b0b2f5a11', 95, 3, 'happy', 220, 0, '["71a2c3d4-5e6f-4a17-9b28-c3d4e5f6a266"]'::jsonb),
-	('2e9f4a13-b6c2-47d8-8b3f-7a5c1e9d0f72', '7e2d9a60-6c13-4f2a-8d4c-9b7f2c1a4e22', 80, 2, 'sleepy', 140, 1, '["93c4e5f6-7a8b-4c39-9d4a-e5f6a7b8c488"]'::jsonb),
-	('3c7a0e5f-1d94-4b62-a9f7-6e3b2d1c8a83', '0f4b71c3-9a6e-4c8d-a143-5e2a9d7b3f33', 70, 2, 'hungry', 90, 2, '["a4d5e6f7-8b9c-4d4a-8e5b-f6a7b8c9d599"]'::jsonb),
-	('4d1b8f26-73ae-45c9-b0d2-8f6a3c1e9b94', '5d3a2e19-1f75-4b6c-b82d-4a9e6f1c8d44', 88, 3, 'excited', 180, 0, '["b5e6f7a8-9c0d-4e5b-9f6c-a7b8c9d0e6aa"]'::jsonb),
-	('5f2c9a71-4e68-4d3b-9e15-2a7c6b8d0ea5', 'a9c4e730-2d8b-4f95-9e21-c7d4b6a1f555', 76, 2, 'calm', 110, 1, '["c6f7a8b9-0d1e-4f6c-8a7d-b8c9d0e1f7bb"]'::jsonb);
+	('14b2c7d9-8f31-4a6e-9a8b-1d2f3c4b5e61', 'c1a5f8d2-3b44-4d17-9c9b-2f6b0b2f5a11', 'Fluffy', 95, 3, 'happy', 220, 0, '["71a2c3d4-5e6f-4a17-9b28-c3d4e5f6a266"]'::jsonb),
+	('2e9f4a13-b6c2-47d8-8b3f-7a5c1e9d0f72', '7e2d9a60-6c13-4f2a-8d4c-9b7f2c1a4e22', 'Naps', 80, 2, 'sleepy', 140, 1, '["93c4e5f6-7a8b-4c39-9d4a-e5f6a7b8c488"]'::jsonb),
+	('3c7a0e5f-1d94-4b62-a9f7-6e3b2d1c8a83', '0f4b71c3-9a6e-4c8d-a143-5e2a9d7b3f33', 'Crunch', 70, 2, 'hungry', 90, 2, '["a4d5e6f7-8b9c-4d4a-8e5b-f6a7b8c9d599"]'::jsonb),
+	('4d1b8f26-73ae-45c9-b0d2-8f6a3c1e9b94', '5d3a2e19-1f75-4b6c-b82d-4a9e6f1c8d44', 'Spark', 88, 3, 'excited', 180, 0, '["b5e6f7a8-9c0d-4e5b-9f6c-a7b8c9d0e6aa"]'::jsonb),
+	('5f2c9a71-4e68-4d3b-9e15-2a7c6b8d0ea5', 'a9c4e730-2d8b-4f95-9e21-c7d4b6a1f555', 'Nimbus', 76, 2, 'calm', 110, 1, '["c6f7a8b9-0d1e-4f6c-8a7d-b8c9d0e1f7bb"]'::jsonb);
 
 -- 3) Category (many per user)
 INSERT INTO category (category_id, user_id, name, percentage, upper_limit, expenditure, daily_expenses)

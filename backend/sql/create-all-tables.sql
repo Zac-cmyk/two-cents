@@ -35,6 +35,7 @@ CREATE INDEX idx_user_session_expires_at ON user_session(expires_at);
 CREATE TABLE pet (
     pet_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL UNIQUE,
+    name TEXT DEFAULT 'Pet',
     health INTEGER DEFAULT 100,
     hearts INTEGER DEFAULT 3,
     state TEXT,
@@ -46,6 +47,23 @@ CREATE TABLE pet (
         FOREIGN KEY (user_id)
         REFERENCES users(user_id)
         ON DELETE CASCADE
+);
+
+CREATE TABLE friend (
+    friend_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL,
+    friend_user_id UUID NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+    CONSTRAINT fk_friend_user
+        FOREIGN KEY (user_id)
+        REFERENCES users(user_id)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_friend_friend_user
+        FOREIGN KEY (friend_user_id)
+        REFERENCES users(user_id)
+        ON DELETE CASCADE,
+    CONSTRAINT uq_friend_pair UNIQUE (user_id, friend_user_id)
 );
 
 CREATE TABLE category (
