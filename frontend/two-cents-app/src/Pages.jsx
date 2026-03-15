@@ -1,9 +1,20 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Outlet } from 'react-router-dom';
 // import Signin from "./auth/Signin"
 // import Signup from "./auth/Signup"
 import Home from './pages/Home'
 import Shop from './pages/Shop'
-import Social from './pages/Social'
+import Layout from './Layout';
+import Socials from './pages/Socials';
+import Expenditure from './pages/Expenditure';
+import FriendStats from './pages/FriendStats'
+
+function WithLayout() {
+  return (
+    <Layout>
+      <Outlet />
+    </Layout>
+  )
+}
 
 function Pages() {
   return (
@@ -11,9 +22,13 @@ function Pages() {
       <Routes>
         {/* <Route path="/signup" element={<Signup />}/>
         <Route path="/signin" element={<Signin />}/> */}
-        <Route path="/" element={<Home />}/>
-        <Route path="/shop" element={<Shop />}/>
-        <Route path="/social" element={<Social />}/>
+        <Route element={<WithLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/shop" element={<Shop />} />
+          <Route path="/socials" element={<Socials />} />
+          <Route path="/expenditure" element={<Expenditure />} />
+          <Route path="/socials/:username" element={<FriendStats />} />
+        </Route>
       </Routes> 
     </>
   );  
