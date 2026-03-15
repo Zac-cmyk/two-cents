@@ -64,7 +64,7 @@ export const createShopItem = async (input: CreateShopItemInput): Promise<ShopIt
 			input.shop_id,
 			input.name,
 			input.price_points,
-			input.quantity ?? 1,
+			input.quantity ?? 0, // start at 0 purchases owned
 			input.cosmetic ?? true,
 		]
 	);
@@ -92,6 +92,7 @@ export const getShopItemsByUserId = async (userId: string): Promise<ShopItemReco
 		 FROM shop_item si
 		 INNER JOIN shop s ON s.shop_id = si.shop_id
 		 WHERE s.user_id = $1
+		   AND (si.cosmetic = false OR si.quantity = 0)
 		 ORDER BY si.name`,
 		[userId]
 	);
@@ -152,8 +153,8 @@ export const purchaseShopItem = async (
 			throw new Error('Item not found');
 		}
 
-		if (item.quantity <= 0) {
-			throw new Error('Item is out of stock');
+		if (item.cosmetic && item.quantity > 0) {
+			throw new Error('Item is already owned');
 		}
 
 		if (user.points < item.price_points) {
@@ -163,7 +164,9 @@ export const purchaseShopItem = async (
 		const remainingPoints = user.points - item.price_points;
 
 		await client.query('UPDATE users SET points = $2 WHERE user_id = $1', [userId, remainingPoints]);
-		await client.query('UPDATE shop_item SET quantity = quantity - 1 WHERE item_id = $1', [itemId]);
+
+		// Increase owned quantity. For cosmetics, this will move from 0 → 1, hiding the item from the shop.
+		await client.query('UPDATE shop_item SET quantity = quantity + 1 WHERE item_id = $1', [itemId]);
 
 		const updatedItemResult = await client.query<ShopItemRecord>(
 			`SELECT ${shopItemSelectFields}
