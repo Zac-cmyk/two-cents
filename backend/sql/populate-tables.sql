@@ -44,12 +44,12 @@ VALUES
 -- 5) Shop items (many per shop)
 INSERT INTO shop_item (item_id, shop_id, name, price_points, quantity, cosmetic)
 VALUES
-	('71a2c3d4-5e6f-4a17-9b28-c3d4e5f6a266', '2a4c6e8f-1b3d-4f57-9a61-c8d2e4f6a711', 'Blue Collar', 150, 1, TRUE),
-	('82b3d4e5-6f7a-4b28-8c39-d4e5f6a7b377', '2a4c6e8f-1b3d-4f57-9a61-c8d2e4f6a711', 'Health Potion', 200, 2, FALSE),
-	('93c4e5f6-7a8b-4c39-9d4a-e5f6a7b8c488', '3b5d7f91-2c4e-4a68-8b72-d9e3f5a7b822', 'Golden Hat', 500, 1, TRUE),
-	('a4d5e6f7-8b9c-4d4a-8e5b-f6a7b8c9d599', '4c6e8a12-3d5f-4b79-9c83-e1f4a6b8c933', 'XP Booster', 300, 1, FALSE),
-	('b5e6f7a8-9c0d-4e5b-9f6c-a7b8c9d0e6aa', '5d7f9134-4e6a-4c8a-8d94-f2a5b7c9d044', 'Pet Snack', 90, 4, FALSE),
-	('c6f7a8b9-0d1e-4f6c-8a7d-b8c9d0e1f7bb', '6e8a1245-5f7b-4d9b-9ea5-a3b6c8d0e155', 'Rainbow Skin', 650, 1, TRUE);
+	('71a2c3d4-5e6f-4a17-9b28-c3d4e5f6a266', '2a4c6e8f-1b3d-4f57-9a61-c8d2e4f6a711', 'A can of tuna', 10, 0, FALSE),
+	('82b3d4e5-6f7a-4b28-8c39-d4e5f6a7b377', '2a4c6e8f-1b3d-4f57-9a61-c8d2e4f6a711', 'Swat-a-fish', 50, 0, FALSE),
+	('93c4e5f6-7a8b-4c39-9d4a-e5f6a7b8c488', '3b5d7f91-2c4e-4a68-8b72-d9e3f5a7b822', 'Catnip', 10, 0, FALSE),
+	('a4d5e6f7-8b9c-4d4a-8e5b-f6a7b8c9d599', '4c6e8a12-3d5f-4b79-9c83-e1f4a6b8c933', 'bowtie', 100, 0, TRUE),
+	('b5e6f7a8-9c0d-4e5b-9f6c-a7b8c9d0e6aa', '5d7f9134-4e6a-4c8a-8d94-f2a5b7c9d044', 'squeaky mouse', 80, 0, TRUE),
+	('c6f7a8b9-0d1e-4f6c-8a7d-b8c9d0e1f7bb', '6e8a1245-5f7b-4d9b-9ea5-a3b6c8d0e155', 'ball of yarn', 90, 0, TRUE);
 
 -- Quick verification
 SELECT 'users' AS table_name, COUNT(*) AS rows FROM users

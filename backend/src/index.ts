@@ -12,10 +12,31 @@ import { verifyDatabaseConnection } from './config/database';
 
 const app: Express = express();
 const initialPort = Number(process.env.PORT || 5000);
+const allowedOrigins = (process.env.CORS_ORIGIN || '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 
 // Middleware
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || '*',
+  origin: (requestOrigin, callback) => {
+    if (!requestOrigin) {
+      callback(null, true);
+      return;
+    }
+
+    if (allowedOrigins.length === 0) {
+      callback(null, true);
+      return;
+    }
+
+    if (allowedOrigins.includes(requestOrigin)) {
+      callback(null, true);
+      return;
+    }
+
+    callback(new Error(`CORS blocked for origin: ${requestOrigin}`));
+  },
   credentials: true,
 }));
 app.use(express.json());

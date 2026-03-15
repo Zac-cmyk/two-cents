@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { Progress } from '@/components/ui/progress'
 import { Button } from '@/components/ui/button'
 import happyCat from '../assets/happyCat.gif'
+import beach from '../assets/beach.gif'
 import bowtie from '../assets/bowtie.png'
 import { categoryApi, getApiErrorMessage, petApi, userApi } from '@/api'
 
@@ -100,7 +101,7 @@ function PetCard({ pet }) {
       <div className="rounded-4xl overflow-hidden shadow-[0_14px_28px_rgba(0,0,0,0.2)] p-3">
 
         <div className="relative mx-auto overflow-hidden rounded-3xl " style={{ width: '336px', height: '192px' }}>
-          <img src="./src/assets/beach.gif" />
+          <img src={beach}></img>
           <div className="absolute left-4 top-4 space-y-2.5">
             <div className="pb-0.5">
               <Hearts count={pet.hearts} max={pet.maxHearts} />
