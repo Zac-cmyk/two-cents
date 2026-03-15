@@ -36,7 +36,7 @@ function Footer() {
     { to: '/', icon: Home, label: 'Home' },
     { to: '/shop', icon: ShoppingCart, label: 'Shop' },
     { to: '/socials', icon: Users, label: 'Socials' },
-    { to: '/expenditure', icon: PiggyBank, label: 'expenditure' },
+    { to: '/log', icon: PiggyBank, label: 'Log' },
   ]
 
   return (

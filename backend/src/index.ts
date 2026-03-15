@@ -1,5 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
+import { getUserById, updateUser, UserRecord } from './functions/users';
+import { Request, Response } from 'express';
 
 import express, { Express } from 'express';
 import cors from 'cors';
@@ -27,11 +29,20 @@ app.get('/', (req, res) => {
 import { healthRouter } from './routes/health.routes';
 app.use('/api/health', healthRouter);
 
+import { userRouter } from './routes/user.routes'; 
+app.use('/api/users', userRouter);
+
 import { categoryRouter } from './routes/category.routes';
 app.use('/api/category', categoryRouter);
 
 import { authRouter } from './routes/auth.routes';
 app.use('/api/auth', authRouter);
+
+import { shopRouter } from './routes/shop.routes';
+app.use('/api/shops', shopRouter);
+
+import { petRouter } from './routes/pet.routes';
+app.use('/api/pets', petRouter);
 
 // Start server
 const startServer = (port: number): Server => {
