@@ -1,12 +1,15 @@
-import express, { Express } from 'express';
-import cors from 'cors';
 import dotenv from 'dotenv';
-
-// Load environment variables
 dotenv.config();
 
+import express, { Express } from 'express';
+import cors from 'cors';
+import { Server } from 'node:http';
+import { verifyDatabaseConnection } from './config/database';
+
+// Load environment variables
+
 const app: Express = express();
-const port = process.env.PORT || 5000;
+const initialPort = Number(process.env.PORT || 5000);
 
 // Middleware
 app.use(cors({
@@ -24,9 +27,40 @@ app.get('/', (req, res) => {
 import { healthRouter } from './routes/health.routes';
 app.use('/api/health', healthRouter);
 
+import { categoryRouter } from './routes/category.routes';
+app.use('/api/category', categoryRouter);
+
+import { authRouter } from './routes/auth.routes';
+app.use('/api/auth', authRouter);
+
+import { shopRouter } from './routes/shop.routes';
+app.use('/api/shops', shopRouter);
+
 // Start server
-app.listen(port, () => {
-  console.log(`[server]: Server is running at http://localhost:${port}`);
+const startServer = (port: number): Server => {
+  const server = app.listen(port, () => {
+    console.log(`[server]: Server is running at http://localhost:${port}`);
+  });
+
+  server.on('error', (error: NodeJS.ErrnoException) => {
+    if (error.code === 'EADDRINUSE') {
+      const nextPort = port + 1;
+      console.warn(`[server]: Port ${port} is in use, retrying on ${nextPort}...`);
+      startServer(nextPort);
+      return;
+    }
+
+    console.error('[server]: Failed to start server', error);
+    process.exit(1);
+  });
+
+  return server;
+};
+
+startServer(initialPort);
+
+verifyDatabaseConnection().catch((error) => {
+  console.error('[database]: PostgreSQL connection failed', error);
 });
 
 export default app;

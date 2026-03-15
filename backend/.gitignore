@@ -9,3 +9,7 @@ yarn-error.log*
 .vscode/
 .idea/
 coverage/
+src/**/*.js
+src/**/*.d.ts
+src/**/*.d.ts.map
+src/**/*.js.map
