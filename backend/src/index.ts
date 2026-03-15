@@ -33,6 +33,9 @@ app.use('/api/category', categoryRouter);
 import { authRouter } from './routes/auth.routes';
 app.use('/api/auth', authRouter);
 
+import { shopRouter } from './routes/shop.routes';
+app.use('/api/shops', shopRouter);
+
 // Start server
 const startServer = (port: number): Server => {
   const server = app.listen(port, () => {
