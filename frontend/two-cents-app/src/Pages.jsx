@@ -5,7 +5,7 @@ import Home from './pages/Home'
 import Shop from './pages/Shop'
 import Layout from './Layout';
 import Socials from './pages/Socials';
-import Expenditure from './pages/Expenditure';
+// import Expenditure from './pages/Expenditure';
 import Log from './pages/Log';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
